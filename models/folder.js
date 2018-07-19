@@ -5,12 +5,12 @@ const folderSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   links:[{ 
-      url: { type: URL },
+      url: { type: String },
       description: { type: String }
   }],
-  subFolders: [{
-      folder_id: { type = String }
-  }]
+//   subFolders: [{
+//       folder_id: { type: String }
+//   }]
 });
 
 const Folder = mongoose.model("Folder", folderSchema);
