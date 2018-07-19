@@ -16,6 +16,8 @@ const combineUser = (first,second) => (
 
 );
 
+
+//API Routes
 Router.get("/api/user/:id", function (req, res) {
         let firstReturn;
         user.returnUser(req.params.id).then(result => {
@@ -37,12 +39,22 @@ Router.get("/api/folder/:id", function (req, res) {
     })
 });
 
-Router.get("/api/folder/:id", function (req, res) {
-    userFolder.returnFolder(req.params.id).then(result => {
-        console.log(result);
-        res.json({ result })
-    })
+Router.post("/api/folder/:id", function (req, res) {
+    userFolder.addFolder(req.params.id, data)
 });
+
+Router.post("/api/link/:id", function (req, res) {
+    userFolder.addLink(req.params.id, data)
+});
+
+Router.delete("/api/folder/:id", function (req, res) {
+    userFolder.deleteFolder(req.params.id, data)
+});
+
+Router.delete("/api/link/:id", function (req, res) {
+    userFolder.deleteLink(req.params.id, data)
+});
+
 
 
 export default Router;
