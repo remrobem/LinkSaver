@@ -57,4 +57,5 @@ Router.delete("/api/link/:id", function (req, res) {
 
 
 
-export default Router;
+// export default Router;
+module.exports = Router;
