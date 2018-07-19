@@ -48,11 +48,11 @@ Router.post("/api/link/:id", function (req, res) {
 });
 
 Router.delete("/api/folder/:id", function (req, res) {
-    userFolder.deleteFolder(req.params.id, data)
+    userFolder.deleteFolder(req.params.id)
 });
 
 Router.delete("/api/link/:id", function (req, res) {
-    userFolder.deleteLink(req.params.id, data)
+    userFolder.deleteLink(req.params.id)
 });
 
 
