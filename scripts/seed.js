@@ -54,15 +54,18 @@ const folderSeed = [
     links: [
       {
         url: "http://arkusnexus.com/2016/09/12/coding-guidelines-mongodb/",
-        description: "MongoDB Style Guide"
+        description: "MongoDB Style Guide",
+        searchTerm: "mongodb guidelines"
       },
       {
         url: "https://github.com/airbnb/javascript/blob/master/README.md",
-        description: "AirBnB Javascript Style Guide"
+        description: "AirBnB Javascript Style Guide",
+        searchTerm: "airbnb guidelines"
       },
       {
         url: "https://github.com/airbnb/javascript/tree/master/react",
-        description: "AirBnB React Style Guide"
+        description: "AirBnB React Style Guide",
+        searchTerm: "react master airbnb"
       }
     ]
   }
