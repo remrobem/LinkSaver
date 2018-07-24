@@ -1,50 +1,18 @@
-import React, { Component } from 'react';
-import './App.css';
-import LinkComp from "./components/stateless/link/link"
-import FolderComp from "./components/stateless/folder/folder"
-import NavComp from "./components/stateless/navbar/navbar"
-import UserComp from "./components/stateless/user/user"
-import axios from "axios"
+import React, { Component } from "react";
+import "./App.css";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { FolderPage } from './components/folder/folder';
+// import { Link } from './components/link';
+// import { HomePage } from './components/home';
 
 class App extends Component {
-  state = {
-    user: "",
-    userID: "",
-    userFolderList: [],
-    activeFolder: "",
-    activeFolderContent: [],
-    activeLinks:[],
-    newFolder:"",
-    newLink:"",
-    newLinkHref:"",
-  };
-
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    console.log(name, value);
-    this.setState({
-      [name]: value
-    });
-  };
-
-  createNewLink = (title, href) => {
-
-
-  };
-
-
-
   render() {
     return (
-      <div className="bg-dark">
-        <NavComp></NavComp>
-        <UserComp>
-          <FolderComp>
-            <LinkComp></LinkComp>
-          </FolderComp>
-        </UserComp>
-
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={FolderPage} />
+        </Switch>
+      </Router>
     );
   }
 }
