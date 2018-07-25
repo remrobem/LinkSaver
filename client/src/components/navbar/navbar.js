@@ -8,7 +8,7 @@ const navComp = props => (
                 <a className="nav-link pt-4" href="">User Settings</a>
                 <a className="nav-link pt-4" href="">Collaborations</a>
             <div>
-                <a className="nav-link pt-4 justify-content-right" href="">Logout</a>
+                <a className="nav-link pt-4 justify-content-right" href="" onClick = {props.logout}>Logout</a>
             </div>
         </div>
     </nav>

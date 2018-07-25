@@ -7,7 +7,16 @@ router.route("/")
   .get(foldersController.returnAllFolders);
 
 
-  module.exports = router;
+router.get("/api/user/:id", function (req, res) {
+  let firstReturn;
+  user.returnUser(req.params.id).then(result => {
+    console.log(result);
+    firstReturn = result;
+  });
+});
+
+
+module.exports = router;
 
 // router.route.get("/api/user/:id", function (req, res) {
 //     let firstReturn;
