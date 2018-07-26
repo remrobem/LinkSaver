@@ -12,7 +12,7 @@ const Folder = props => (
                 <img className="copy-icon m-1" id="copyButton" alt="Copy Link To Clipboard" src="./assets/images/icons/link.png"></img>
                 <img className="delete-icon m-1" id="deleteButton" alt="Delete Link From Folder" src="./assets/images/icons/delete.png"></img>
             </div>
-            <button className="btn btn-success" onClick={() => props.removeActiveFolder(props._id)}>Close</button>
+            <button className="btn btn-success" onClick={() => props.setActiveFolder(props._id, "active")}>Close</button>
         </div>
 
         <div className="spacer row col-12 bg-white mx-2"></div>

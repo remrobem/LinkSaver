@@ -2,7 +2,7 @@ import React from "react";
 import "./login.css";
 
 const Login = props => (
-    <div className="row bg-dark col-12 text-white">
+    <div className="row bg-dark col-12 text-white fullpage">
         <div className= "col-3">
         </div>
         <seciton className = "col-6 bg-secondary mt-5 py-5">

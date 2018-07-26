@@ -2,7 +2,7 @@ import React from "react";
 import "./folder.css";
 
 const InnactiveFolder = props => (
-    <div className="col-12 py-2 bg-secondary text-white border border-2 border-white mt-4" onClick={() => props.setActiveFolder(props._id)}>
+    <div className="col-12 py-2 bg-secondary text-white border border-2 border-white mt-4" onClick={() => props.setActiveFolder(props._id, "innactive")}>
 
         <div className="row">
             <span className="ml-2 col-1"></span>
