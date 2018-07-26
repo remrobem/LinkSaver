@@ -3,17 +3,27 @@ const foldersController = require("../controller/foldersController");
 const userFolderController = require("../controller/UserFolderController");
 const users = require("../controller/usersController");
 
+//API routes
+
+//write in all routes so they are able to be hit by postman
+
+
+//Get Routes
+  //Get Folders for user
+
+//Post Routes
+  //Post New Folder (userID)
+  //Post New Link (folder ID)
+  //Create new user
+  //Share folder (User ID, folder ID)
+
+//Delete Routes
+  //Delete folder from user
+  //Delete Link
+  //Delete User
+
 router.route("/")
   .get(foldersController.returnAllFolders);
-
-
-router.get("/api/user/:id", function (req, res) {
-  let firstReturn;
-  user.returnUser(req.params.id).then(result => {
-    console.log(result);
-    firstReturn = result;
-  });
-});
 
 
 module.exports = router;
