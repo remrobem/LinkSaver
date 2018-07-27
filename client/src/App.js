@@ -18,12 +18,12 @@ class App extends Component {
   state = {
     user: "",
     userID: "",
-    userFolderList: [{ title: "1", _id: "1", links: [{ url: "1", title: "1" }, { url: "2", title: "2" }, { url: "3", title: "3" }] }, { title: "2", _id: "2", links: [{ url: "2", title: "2" }, { url: "4", title: "4" }, { url: "6", title: "6" }] }, { title: "3", _id: "3", links: [{ url: "3", title: "3" }, { url: "6", title: "6" }, { url: "9", title: "9" }] }],
-    innactiveFolders: [{ title: "1", _id: "1", links: [{ url: "1", title: "1" }, { url: "2", title: "2" }, { url: "3", title: "3" }] }, { title: "2", _id: "2", links: [{ url: "2", title: "2" }, { url: "4", title: "4" }, { url: "6", title: "6" },] }, { title: "3", _id: "3", links: [{ url: "3", title: "3" }, { url: "6", title: "6" }, { url: "9", title: "9" }] }],
+    userFolderList: [{ name: "1", _id: "1", description: "Test data in multiples of 1", links: [{ url: "1", name: "1" }, { url: "2", name: "2" }, { url: "3", name: "3" }] }, { name: "2", _id: "2", description: "Test data in multiples of 2", links: [{ url: "2", name: "2" }, { url: "4", name: "4" }, { url: "6", name: "6" }] }, { name: "3", _id: "3",description: "Test data in multiples of 3", links: [{ url: "3", name: "3" }, { url: "6", name: "6" }, { url: "9", name: "9" }] }],
+    innactiveFolders: [{ name: "1", _id: "1", description: "Test data in multiples of 1", links: [{ url: "1", name: "1" }, { url: "2", name: "2" }, { url: "3", name: "3" }] }, { name: "2", _id: "2", description: "Test data in multiples of 2", links: [{ url: "2", name: "2" }, { url: "4", name: "4" }, { url: "6", name: "6" }] }, { name: "3", _id: "3",description: "Test data in multiples of 3", links: [{ url: "3", name: "3" }, { url: "6", name: "6" }, { url: "9", name: "9" }] }],
     activeFolders: [],
     newFolder: "default",
     newDescription: "default",
-    newTitle: "default",
+    newname: "default",
     newURL: "default",
     searchTerm: ""
   };
@@ -107,27 +107,29 @@ class App extends Component {
         //Folder Functions
         //----------
         addFolder = (userID) => {
-          const Title = this.state.newFolder;
+          const name = this.state.newFolder;
           const Description = this.state.newDescription;
-          const newFolder = {name: Title, description: Description, links: [] };
+          const newFolder = {name: name, description: Description, links: [] };
           console.log(newFolder);
           //api.createfolder(newFolder,userID)
 
           //axios post request to user for new folder
         };
 
-        deleteFolder = (FolderID) => {
+        deleteFolder = (folderID) => {
           //axios delete request to folder ID to remove user from user access.
             //must return new object for folder
+
+            console.log(`Folder ID of ${folderID} to be deleted`)
         };
       
 
         //Link Functions
         //----------
         addLink = (folderID) => {
-          const Title = this.state.newTitle;
+          const name = this.state.newname;
           const URL = this.state.newURL;
-          const newLink = { folderID: folderID, title: Title, url: URL };
+          const newLink = { folderID: folderID, name: name, url: URL };
           console.log(newLink);
           //axios post request to folder for new link entry
         };
@@ -135,6 +137,8 @@ class App extends Component {
         deleteLink = (folderID, linkUrl) => {
           //axios delete request to remove link from folder
             //must return new object for folder
+
+            console.log(`Link of  Link URL: ${linkUrl} to be deleted from Folder ID of ${folderID}`)
         };
 
 
@@ -160,8 +164,9 @@ class App extends Component {
                 key={folder._id}
                 _id={folder._id}
                 folderURL={`linksaver/folder/${folder._id}`}
-                title={folder.title}
+                name={folder.name}
                 links={folder.links}
+                description={folder.description}
                 handleInputChange={this.handleInputChange}
                 setActiveFolder={this.setActiveFolder}
                 deleteFolder={this.deleteFolder}
@@ -174,7 +179,8 @@ class App extends Component {
               <InnactiveFolder
                 key={folder._id}
                 _id={folder._id}
-                title={folder.title}
+                name={folder.name}
+                description={folder.description}
                 setActiveFolder={this.setActiveFolder}
                 deleteFolder={this.deleteFolder}
               />
