@@ -85,49 +85,53 @@ db.User.remove({})
       .then(() => db.Folder.collection.insertMany(folderSeed))
       .then(data => {
         let folderIds = data.insertedIds;
-        // console.log(folderIds);
+        console.log(folderIds);
         console.log(`${data.insertedCount} Folder records inserted`);
+        process.exit(0);
 
         //  add user assignments to folders. 
         // Build array of entries for any combinations needed based on the users and folders inserted above
 
-        db.UserFolder.remove({})
-          .then(() => {
-            // console.log(userIds, folderIds);
-            let userFolderArr = [];
-            userFolderArr.push({
-              user_id: userIds[0],
-              folder_id: folderIds[0],
-              read_access: true,
-              update_access: true
-            });
-            userFolderArr.push({
-              user_id: userIds[1],
-              folder_id: folderIds[1],
-              read_access: true,
-              update_access: true
-            });
-            userFolderArr.push({
-              user_id: userIds[2],
-              folder_id: folderIds[0],
-              read_access: true,
-              update_access: true
-            });
-            userFolderArr.push({
-              user_id: userIds[2],
-              folder_id: folderIds[1],
-              read_access: true,
-              update_access: true
-            });
-            console.log(userFolderArr);
+        // db.UserFolder.remove({})
+        //   .then(() => {
+        //     console.log(`userids:`)
+        //     console.log(JSON.stringify(userIds));
+        //     console.log(`folderids:`);
+        //       console.log(JSON.stringify(folderIds));
+        //     let userFolderArr = [];
+        //     userFolderArr.push({
+        //       user_id: userIds."0",
+        //       folder_id: folderIds[0],
+        //       read_access: true,
+        //       update_access: true
+        //     });
+        //     userFolderArr.push({
+        //       user_id: userIds[1],
+        //       folder_id: folderIds[1],
+        //       read_access: true,
+        //       update_access: true
+        //     });
+        //     userFolderArr.push({
+        //       user_id: userIds[2],
+        //       folder_id: folderIds[0],
+        //       read_access: true,
+        //       update_access: true
+        //     });
+        //     userFolderArr.push({
+        //       user_id: userIds[2],
+        //       folder_id: folderIds[1],
+        //       read_access: true,
+        //       update_access: true
+        //     });
+        //     console.log(userFolderArr);
 
-            db.UserFolder.collection.insertMany(userFolderArr)
-            .then(data => {
-              // console.log(folderIds);
-              console.log(`${data.insertedCount} User Folder records inserted`);
-              process.exit(0);
-            });
-          })
+        //     db.UserFolder.collection.insertMany(userFolderArr)
+        //     .then(data => {
+        //       // console.log(folderIds);
+        //       console.log(`${data.insertedCount} User Folder records inserted`);
+        //       process.exit(0);
+        //     });
+        //   })
       });
   })
 
