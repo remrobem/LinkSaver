@@ -18,6 +18,16 @@ const UserComp = props => (
                         onChange={props.handleInputChange}
                     />
                 </div>
+                <div className="form-group">
+                    <label>Description:</label>
+                    <input
+                        type="text"
+                        className="form-control col-8"
+                        name="newDescription"
+                        value={props.newDescription}
+                        onChange={props.handleInputChange}
+                    />
+                </div>
                 <button className="btn btn-success my-2" onClick={() => props.addFolder(props.userID)}>Add Folder</button>
             </div>
         </div>

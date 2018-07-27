@@ -20,8 +20,8 @@ export default {
     createUser: function(userObj) {
         return axios.post(`${baseURL}/user/`, {userObj});
     },
-    createfolder: function(folderObj) {
-        return axios.post(`${baseURL}/folder/`, {folderObj});
+    createfolder: function(folderObj, userID) {
+        return axios.post(`${baseURL}/folder/:${userID}`, {folderObj});
     },
     //----------
     //Put

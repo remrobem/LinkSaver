@@ -15,6 +15,4 @@ export class folderService {
   static getFolderbyId(id) {
     return axios.get(`${FOLDER_URL}/${id}`);
   }
-
-  
 }

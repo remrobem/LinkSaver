@@ -10,7 +10,7 @@ const Folder = props => (
             <h4 className="col-6 mt-4">FOLDER TITLE TEXT {props.title}</h4>
             <div className="col-4">
                 <img onClick={() => props.copy(props.folderURL)} className="copy-icon m-1" id="copyButton" alt="Copy Link To Clipboard" src="./assets/images/icons/link.png"></img>
-                <img className="delete-icon m-1" id="deleteButton" alt="Delete Link From Folder" src="./assets/images/icons/delete.png"></img>
+                <img onClick={() => props.deleteFolder(props._id)} className="delete-icon m-1" id="deleteButton" alt="Delete Link From Folder" src="./assets/images/icons/delete.png"></img>
             </div>
         </div>
 
@@ -21,7 +21,7 @@ const Folder = props => (
                         key={link.url}
                         title={link.title}
                         url={link.url}
-                        removeLink={props.removeLink}
+                        removeLink={props.deleteLink}
                         copy={props.copy}
                     />)
                 })}

@@ -4,6 +4,7 @@
 
 import React, { Component } from "react";
 import "./App.css";
+import api from './util/api'
 import Folder from './components/folder/folder';
 import InnactiveFolder from './components/innactiveFolder/innactiveFolder';
 import Navbar from './components/navbar/navbar';
@@ -15,13 +16,13 @@ import Login from './components/login/login';
 //----------
 class App extends Component {
   state = {
-    loggedIn: false,
     user: "",
     userID: "",
     userFolderList: [{ title: "1", _id: "1", links: [{ url: "1", title: "1" }, { url: "2", title: "2" }, { url: "3", title: "3" }] }, { title: "2", _id: "2", links: [{ url: "2", title: "2" }, { url: "4", title: "4" }, { url: "6", title: "6" }] }, { title: "3", _id: "3", links: [{ url: "3", title: "3" }, { url: "6", title: "6" }, { url: "9", title: "9" }] }],
     innactiveFolders: [{ title: "1", _id: "1", links: [{ url: "1", title: "1" }, { url: "2", title: "2" }, { url: "3", title: "3" }] }, { title: "2", _id: "2", links: [{ url: "2", title: "2" }, { url: "4", title: "4" }, { url: "6", title: "6" },] }, { title: "3", _id: "3", links: [{ url: "3", title: "3" }, { url: "6", title: "6" }, { url: "9", title: "9" }] }],
     activeFolders: [],
     newFolder: "default",
+    newDescription: "default",
     newTitle: "default",
     newURL: "default",
     searchTerm: ""
@@ -106,9 +107,12 @@ class App extends Component {
         //Folder Functions
         //----------
         addFolder = (userID) => {
-          let sanitizeTitle = this.state.newFolder.toLowerCase();
-          const newFolder = { UserID: userID, title: sanitizeTitle };
+          const Title = this.state.newFolder;
+          const Description = this.state.newDescription;
+          const newFolder = {name: Title, description: Description, links: [] };
           console.log(newFolder);
+          //api.createfolder(newFolder,userID)
+
           //axios post request to user for new folder
         };
 
@@ -121,14 +125,14 @@ class App extends Component {
         //Link Functions
         //----------
         addLink = (folderID) => {
-          let sanitizeTitle = this.state.newTitle.toLowerCase();
-          let sanitizeURL = this.state.newURL.toLowerCase();
-          const newLink = { folderID: folderID, title: sanitizeTitle, url: sanitizeURL };
+          const Title = this.state.newTitle;
+          const URL = this.state.newURL;
+          const newLink = { folderID: folderID, title: Title, url: URL };
           console.log(newLink);
           //axios post request to folder for new link entry
         };
       
-        deleteLink = (linkUrl) => {
+        deleteLink = (folderID, linkUrl) => {
           //axios delete request to remove link from folder
             //must return new object for folder
         };
@@ -160,7 +164,8 @@ class App extends Component {
                 links={folder.links}
                 handleInputChange={this.handleInputChange}
                 setActiveFolder={this.setActiveFolder}
-                removeLink={this.removeLink}
+                deleteFolder={this.deleteFolder}
+                deleteLink={this.deleteLink}
                 copy={this.copy}
                 addLink={this.addLink}
               />
@@ -171,6 +176,7 @@ class App extends Component {
                 _id={folder._id}
                 title={folder.title}
                 setActiveFolder={this.setActiveFolder}
+                deleteFolder={this.deleteFolder}
               />
             ))}
           </User>
