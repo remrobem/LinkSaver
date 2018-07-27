@@ -28,6 +28,7 @@ const Folder = props => (
                         url={link.url}
                         deleteLink={props.deleteLink}
                         copy={props.copy}
+                        description={link.description}
                     />)
                 })}
             </div>
@@ -54,10 +55,21 @@ const Folder = props => (
                     onChange={props.handleInputChange}
                 />
             </div>
+            <div className="form-group">
+                <label>Description:</label>
+                <input
+                    type="text"
+                    className="form-control col-8"
+                    name="newDescription"
+                    value={props.newDescription}
+                    onChange={props.handleInputChange}
+                />
+            </div>
             <button className="btn btn-success my-2" onClick={() => props.addLink(props._id)}>Add New Link</button>
         </div>
 
     </div>
+
 );
 
 export default Folder;

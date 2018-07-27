@@ -12,3 +12,12 @@
     height:2px;
     width: 85%;
 }
+
+.linka {
+    color: black;  
+}
+
+.linka:hover {
+    color: gray;
+    text-decoration: none
+}

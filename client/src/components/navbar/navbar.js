@@ -5,10 +5,10 @@ const navComp = props => (
     <nav className="nav bg-secondary text-white p-2 border-bottom border-white">
         <div className="row mb-2">
                 <h2 className="nav-link active" href="">LinkSaver</h2>
-                <a className="nav-link pt-4" href="">User Settings</a>
-                <a className="nav-link pt-4" href="">Collaborations</a>
+                <a className="nav-link navStyle pt-4" href="">User Settings</a>
+                <a className="nav-link navStyle pt-4" href="">Collaborations</a>
             <div>
-                <a className="nav-link pt-4 justify-content-right" href="" onClick = {props.logout}>Logout</a>
+                <a className="nav-link navStyle pt-4 justify-content-right" href="" onClick = {props.logout}>Logout</a>
             </div>
         </div>
     </nav>

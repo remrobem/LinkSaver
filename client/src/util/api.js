@@ -22,12 +22,14 @@ export default {
     },
     createfolder: function(folderObj, userID) {
         return axios.post(`${baseURL}/folder/:${userID}`, {folderObj});
+        //MUST RETURN NEW USER INFO
     },
     //----------
     //Put
     //----------
     createLink: function(folderID, linkObj) {
         return axios.put(`${baseURL}/folder/${folderID}`, {linkObj});
+        //MUST RETURN NEW FOLDER INFO
     },
     //----------
     //Delete
@@ -38,10 +40,13 @@ export default {
     ,
     deleteFolder: function(folderID) {
         return axios.delete(`${baseURL}/folder/${folderID}`);
+        //MUST RETURN NEW USER FOLDER INFO
     }
     ,
     deleteLink:  function(folderID, linkURL) {
         return axios.delete(`${baseURL}/folder/${folderID}`, {linkURL});
+
+        //MUST RETURN NEW FOLDER
     }
     ,
 

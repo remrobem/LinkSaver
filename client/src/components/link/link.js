@@ -6,7 +6,7 @@ const LinkComp = props => (
 
         <div className="row">
             <span className="ml-2 col-2"></span>
-            <a className="link font-weight-bold mt-2" href="http://www.google.com" rel="noopener noreferrer" target="_blank">{props.link}LINK SNYOPSIS</a>
+            <a className="link font-weight-bold mt-2 linka" href={props.url} rel="noopener noreferrer" target="_blank">{props.name}</a>
         </div>
 
         <div className="spacer row col-12 bg-dark mx-2 my-2"></div>
@@ -15,7 +15,7 @@ const LinkComp = props => (
             <span className="ml-2 col-1"></span>
             <div className="col-6">
                 <p>
-                    {props.name}TEXT FROM DESCRIPTION FIELD I am generating filler text which serves as the first 144 characters of a link.
+                    {props.description}TEXT FROM DESCRIPTION FIELD I am generating filler text which serves as the first 144 characters of a link.
                 </p>
             </div>
             <div className="col-4">
