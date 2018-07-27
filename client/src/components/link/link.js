@@ -2,7 +2,7 @@ import React from "react";
 import "./link.css";
 
 const LinkComp = props => (
-    <div className="col-12 my-2 py-2 bg-secondary text-white border border-2 border-white">
+    <div className="col-12 my-2 py-2 bg-secondary text-white border-2 border-white">
 
         <div className="row">
             <span className="ml-2 col-2"></span>

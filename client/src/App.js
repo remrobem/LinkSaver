@@ -12,14 +12,15 @@ import { folderService } from "./services/folderService";
 //Define Stateful Elements
 class App extends Component {
   state = {
+    alerts:"Default",
     user: "",
     userID: "",
     userFolderList: [{ title: "1", _id: "1", links: [{ url: "1", title: "1" }, { url: "2", title: "2" }, { url: "3", title: "3" }] }, { title: "2", _id: "2", links: [{ url: "2", title: "2" }, { url: "4", title: "4" }, { url: "6", title: "6" }] }, { title: "3", _id: "3", links: [{ url: "3", title: "3" }, { url: "6", title: "6" }, { url: "9", title: "9" }] }],
-    innactiveFolders: [{ title: "1", _id: "1", links: [{ url: "1", title: "1" }, { url: "2", title: "2" }, { url: "3", title: "3" }] }, { title: "2", _id: "2", links: [{ url: "2", title: "2" }, { url: "4", title: "4" }, { url: "6", title: "6" }] }],
-    activeFolders: [{ title: "3", _id: "3", links: [{ url: "3", title: "3" }, { url: "6", title: "6" }, { url: "9", title: "9" }] }],
-    newFolder: "",
-    newLink: "",
-    newLinkHref: "",
+    innactiveFolders: [{ title: "1", _id: "1", links: [{ url: "1", title: "1" }, { url: "2", title: "2" }, { url: "3", title: "3" }] }, { title: "2", _id: "2", links: [{ url: "2", title: "2" }, { url: "4", title: "4" }, { url: "6", title: "6" },] }, { title: "3", _id: "3", links: [{ url: "3", title: "3" }, { url: "6", title: "6" }, { url: "9", title: "9" }] }],
+    activeFolders: [],
+    newFolder: "default",
+    newTitle: "default",
+    newURL: "default",
     searchTerm: ""
   };
 
@@ -81,7 +82,6 @@ class App extends Component {
     const { name, value } = event.target;
     console.log(name, value);
     this.setState({
-      ...this.state,
       [name]: value
     });
   };
@@ -95,9 +95,19 @@ class App extends Component {
 
   //Function declaration Library
 
-  createNewLink = (title, href) => {
+  addFolder = (userID) => {
+    let sanitizeTitle = this.state.newFolder.toLowerCase()
+    const newFolder = { folderID: userID, title: sanitizeTitle};
+    console.log(newFolder);
+    //axios post request to user for new folder
+  };
 
-
+  addLink = (folderID) => {
+    let sanitizeTitle = this.state.newTitle.toLowerCase()
+    let sanitizeURL = this.state.newURL.toLowerCase()
+    const newLink = { folderID: folderID, title: sanitizeTitle, url: sanitizeURL };
+    console.log(newLink);
+    //axios post request to folder for new link entry
   };
 
   getfolder() {
@@ -116,16 +126,22 @@ class App extends Component {
           <Navbar
             logout={this.logout}
           />
-          <User>
+          <User
+            addFolder={this.addFolder}
+            handleInputChange={this.handleInputChange}
+          >
             {this.state.activeFolders.map(folder => (
               <Folder
                 key={folder._id}
                 _id={folder._id}
+                folderURL={`linksaver/folder/${folder._id}`}
                 title={folder.title}
                 links={folder.links}
+                handleInputChange={this.handleInputChange}
                 setActiveFolder={this.setActiveFolder}
                 removeLink={this.removeLink}
                 copy={this.copy}
+                addLink={this.addLink}
               />
             ))}
             {this.state.innactiveFolders.map(folder => (
