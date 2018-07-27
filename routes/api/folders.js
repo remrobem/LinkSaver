@@ -1,29 +1,46 @@
 const router = require("express").Router();
-const foldersController = require("../controller/foldersController");
-const userFolderController = require("../controller/UserFolderController");
-const users = require("../controller/usersController");
+const foldersController = require("../../controller/foldersController");
+// const userFolderController = require("../../controller/UserFolderController");
+// const users = require("../../controller/usersController");
 
 //API routes
 
 //write in all routes so they are able to be hit by postman
 
-
 //Get Routes
-  //Get Folders for user
+//Get Folders for user    /returnUserFolders/:userId
 
 //Post Routes
-  //Post New Folder (userID)
-  //Post New Link (folder ID)
-  //Create new user
-  //Share folder (User ID, folder ID)
+//Post New Folder (userID)
+//Post New Link (folder ID)
+//Create new user
+//Share folder (User ID, folder ID)
 
 //Delete Routes
-  //Delete folder from user
-  //Delete Link
-  //Delete User
+//Delete folder from user
+//Delete Link
+//Delete User
 
-router.route("/")
-  .get(foldersController.returnAllFolders);
+router.route("/returnAllFolders")
+.get(foldersController.returnAllFolders);
+
+router.route("/returnUserFolders/:userId")
+.get(foldersController.returnUserFolders);
+
+router.route("/createFolder")
+.post(foldersController.createFolder);
+
+router.route("/addUserToFolder")
+.post(foldersController.addUserToFolder);
+
+router.route("/addFolderToUser")
+.post(foldersController.addFolderToUser);
+
+router.route("/addFolderToUser")
+.post(foldersController.addFolderToUser);
+
+router.route("/addLink")
+.post(foldersController.addLink);
 
 
 module.exports = router;

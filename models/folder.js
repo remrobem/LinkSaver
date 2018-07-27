@@ -9,6 +9,9 @@ const folderSchema = new Schema({
       description: { type: String },
       searchTerm: { type: String }
   }],
+  users:[{
+    type: mongoose.Schema.Types.ObjectId,ref: 'User'
+  }]
 //   subFolders: [{
 //       folder_id: { type: String }
 //   }]
