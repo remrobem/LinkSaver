@@ -6,7 +6,6 @@ import InnactiveFolder from './components/innactiveFolder/innactiveFolder';
 import Navbar from './components/navbar/navbar';
 import User from './components/user/user';
 import Login from './components/login/login';
-import { folderService } from "./services/folderService";
 
 //Define State
 class App extends Component {
@@ -45,6 +44,8 @@ class App extends Component {
         newInnactiveFolders = currentInnactive.filter(item => item._id !== folderID);
         newActiveFolders = currentActive.concat(currentInnactive.filter(item => item._id === folderID))
         break;
+
+      default:
     }
     this.setState({
       ...this.state,
@@ -125,6 +126,7 @@ class App extends Component {
             logout={this.logout}
           />
           <User
+            userID={this.state.userID}
             addFolder={this.addFolder}
             handleInputChange={this.handleInputChange}
           >

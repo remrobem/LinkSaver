@@ -5,7 +5,7 @@ const Login = props => (
     <div className="row bg-dark col-12 text-white fullpage rounded">
         <div className= "col-3">
         </div>
-        <seciton className = "col-6 bg-secondary mt-5 py-3 rounded border border-white">
+        <section className = "col-6 bg-secondary mt-5 py-3 rounded border border-white">
         <h2>
             Please Login
         </h2>
@@ -31,7 +31,7 @@ const Login = props => (
             />
         </div>
         <button type="button" className="btn btn-success" onClick={props.setUser}> Log In</button>
-        </seciton>
+        </section>
         <div className= "col-3">
         </div>
     </div>
