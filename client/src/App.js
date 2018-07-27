@@ -4,15 +4,14 @@ import "./App.css";
 import Folder from './components/folder/folder';
 import InnactiveFolder from './components/innactiveFolder/innactiveFolder';
 import Navbar from './components/navbar/navbar';
-//import Link from './components/link/link';
 import User from './components/user/user';
 import Login from './components/login/login';
 import { folderService } from "./services/folderService";
 
-//Define Stateful Elements
+//Define State
 class App extends Component {
   state = {
-    alerts:"Default",
+    loggedIn: false,
     user: "",
     userID: "",
     userFolderList: [{ title: "1", _id: "1", links: [{ url: "1", title: "1" }, { url: "2", title: "2" }, { url: "3", title: "3" }] }, { title: "2", _id: "2", links: [{ url: "2", title: "2" }, { url: "4", title: "4" }, { url: "6", title: "6" }] }, { title: "3", _id: "3", links: [{ url: "3", title: "3" }, { url: "6", title: "6" }, { url: "9", title: "9" }] }],
@@ -60,7 +59,6 @@ class App extends Component {
 
     //REQUIRE AUTENTICATION LOGIC HERE
 
-
     userAuthName = "Some Value For User Name"
     userAuthID = "Some Value For User ID"
     this.setState({
@@ -78,6 +76,38 @@ class App extends Component {
     })
   };
 
+  copy = (coppiedText) => {
+    coppiedText.select();
+    document.execCommand("copy");
+  }
+
+  //Function declaration Library
+
+  addFolder = (userID) => {
+    let sanitizeTitle = this.state.newFolder.toLowerCase();
+    const newFolder = { UserID: userID, title: sanitizeTitle };
+    console.log(newFolder);
+    //axios post request to user for new folder
+  };
+
+  addLink = (folderID) => {
+    let sanitizeTitle = this.state.newTitle.toLowerCase();
+    let sanitizeURL = this.state.newURL.toLowerCase();
+    const newLink = { folderID: folderID, title: sanitizeTitle, url: sanitizeURL };
+    console.log(newLink);
+    //axios post request to folder for new link entry
+  };
+
+  deleteFolder = (FolderID) => {
+    //axios delete request to folder ID to remove user from user access.
+      //must return new object for folder
+  };
+
+  deleteLink = (linkUrl) => {
+    //axios delete request to remove link from folder
+      //must return new object for folder
+  };
+
   handleInputChange = event => {
     const { name, value } = event.target;
     console.log(name, value);
@@ -85,38 +115,6 @@ class App extends Component {
       [name]: value
     });
   };
-
-  copy = (coppiedText) => {
-    //Code to copy selection to clipboard
-    coppiedText.select();
-    /* Copy the text inside the text field */
-    document.execCommand("copy");
-  }
-
-  //Function declaration Library
-
-  addFolder = (userID) => {
-    let sanitizeTitle = this.state.newFolder.toLowerCase()
-    const newFolder = { folderID: userID, title: sanitizeTitle};
-    console.log(newFolder);
-    //axios post request to user for new folder
-  };
-
-  addLink = (folderID) => {
-    let sanitizeTitle = this.state.newTitle.toLowerCase()
-    let sanitizeURL = this.state.newURL.toLowerCase()
-    const newLink = { folderID: folderID, title: sanitizeTitle, url: sanitizeURL };
-    console.log(newLink);
-    //axios post request to folder for new link entry
-  };
-
-  getfolder() {
-    folderService
-      .queryForFolders()
-      //   .then(res => this.setState({ folders: res.data }));
-      .then(res => this.setState({ ...this.state, folders: res.data }));
-  }
-
 
   //Render Page
   render() {
@@ -159,9 +157,6 @@ class App extends Component {
     else {
       return (
         <div>
-          <Navbar
-            logout={this.logout}
-          />
           <Login
             handleInputChange={this.handleInputChange}
             setUser={this.setUser}
