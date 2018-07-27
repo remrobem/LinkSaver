@@ -87,6 +87,7 @@ db.User.remove({})
         let folderIds = data.insertedIds;
         console.log(folderIds);
         console.log(`${data.insertedCount} Folder records inserted`);
+        process.exit(0);
 
         //  add user assignments to folders. 
         // Build array of entries for any combinations needed based on the users and folders inserted above

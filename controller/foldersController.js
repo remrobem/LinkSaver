@@ -13,19 +13,11 @@ module.exports = {
   },
 
   returnUserFolders: function(req, res) {
-    console.log("aaa" + req.params.userId)
-    db.User
+   db.User
       .findOne({_id: req.params.userId})
       .populate('folders')
       .then(dbFolders => res.json(dbFolders))
       .catch(err => res.status(422).json(err));
-  },
-
-  returnFolder: function(req, res) {
-    db.Folder
-      .findById(req.params.id)
-      .then(dbFolder => res.json(dbFolder))
-      .catch(err => res.status(400).json(err));
   },
 
   createFolder: function(req, res) {
@@ -43,16 +35,11 @@ module.exports = {
     db.User
       .findOneAndUpdate({_id: req.body.user_id}, { $push: {folders: req.body.folder_id}}, {new:true})
       .then(dbFolder => res.json(dbFolder))
-      .catch(err => res.status(400).json(err))
-  },
-
-  addUserToFolder: function(req,res) {
-    console.log(JSON.stringify(req.body))
-    
-    db.Folder
-      .findOneAndUpdate({_id: req.body.folder_id}, { $push: {users: req.body.user_id}}, {new:true})
-      .then(dbFolder => res.json(dbFolder))
-      .catch(err => res.status(400).json(err))
+      .then(
+        db.Folder
+          .findOneAndUpdate({_id: req.body.folder_id}, { $push: {users: req.body.user_id}}, {new:true})
+          .then(dbFolder => res.json(dbFolder))
+          .catch(err => res.status(400).json(err)))
   },
 
   addLink: function(req, res) {
@@ -62,17 +49,61 @@ module.exports = {
       .then(dbFolder => res.json(dbFolder))
       .catch(err => res.status(400).json(err));
   },
+  
+  deleteFolder: function(req, res) {
+    db.Folder
+      .findOneAndDelete({ _id: req.params.folderId })
+      // .then(dbFolder => dbFolder.remove())
+      // .then(dbFolder => res.json(dbFolder))
+      .then( db.User
+              .updateMany({folders: [req.params.folderId]}, { $pullAll: { folders: [req.params.folderId] }}))
+              .then(dbFolder => res.json(dbFolder))
+      .catch(err => res.status(400).json(err));
+  },
+
+  deleteUserFolder: function(req, res) {
+    db.User
+      // .findOne({ _id: req.params.userId})
+      // .populate('folders')
+      .updateOne({_id: req.params.userId},{ $pullAll: {folders: [req.params.folderId] }})
+      .then(dbFolder => res.json(dbFolder))
+      .catch(err => res.status(400).json(err));
+  }
+  // returnFolder: function(req, res) {
+  //   db.Folder
+  //     .findById(req.params.id)
+  //     .then(dbFolder => res.json(dbFolder))
+  //     .catch(err => res.status(400).json(err));
+  // },
+
+  // addFolderToUser: function(req,res) {
+  //   console.log(JSON.stringify(req.body))
+  //   let newUserFolder = {folders: req.body.folder_id, user_id: req.body.user_id};
+  //   db.User
+  //     .findOneAndUpdate({_id: req.body.user_id}, { $push: {folders: req.body.folder_id}}, {new:true})
+  //     .then(dbFolder => res.json(dbFolder))
+  //     .catch(err => res.status(400).json(err))
+  // },
+
+  // addUserToFolder: function(req,res) {
+  //   console.log(JSON.stringify(req.body))
+  //   db.Folder
+  //     .findOneAndUpdate({_id: req.body.folder_id}, { $push: {users: req.body.user_id}}, {new:true})
+  //     .then(dbFolder => res.json(dbFolder))
+  //     .catch(err => res.status(400).json(err))
+  // },
+  //
   // updateFolder: function(req, res) {
   //   db.Folder
   //     .findOneAndUpdate({ _id: req.params.id }, req.body, {new: true})
   //     .then(dbFolder => res.json(dbFolder))
   //     .catch(err => res.status(400).json(err));
   // },
-  deleteFolder: function(req, res) {
-    db.Folder
-      .findById({ _id: req.params.id })
-      .then(dbFolder => dbFolder.remove())
-      .then(dbFolder => res.json(dbFolder))
-      .catch(err => res.status(400).json(err));
-  }
+// addUserToFolder: function(req,res) {
+  //   console.log(JSON.stringify(req.body))
+  //   db.Folder
+  //     .findOneAndUpdate({_id: req.body.folder_id}, { $push: {users: req.body.user_id}}, {new:true})
+  //     .then(dbFolder => res.json(dbFolder))
+  //     .catch(err => res.status(400).json(err))
+  // },
 };

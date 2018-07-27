@@ -11,13 +11,14 @@ const foldersController = require("../../controller/foldersController");
 //Get Folders for user    /returnUserFolders/:userId
 
 //Post Routes
-//Post New Folder (userID)
-//Post New Link (folder ID)
+//Post New Folder (userID) /createFolder   /addFolderToUser
+//Post New Link (folder ID) /addLink
 //Create new user
-//Share folder (User ID, folder ID)
+//Share folder (User ID, folder ID) /returnUserFolders/:userId   /addFolderToUser
 
 //Delete Routes
-//Delete folder from user
+//Delete folder             /deleteFolder  (still needs to delete folder from all users)
+//Delete folder from user   /deleteUserFolder/user_id/folder_id
 //Delete Link
 //Delete User
 
@@ -30,18 +31,17 @@ router.route("/returnUserFolders/:userId")
 router.route("/createFolder")
 .post(foldersController.createFolder);
 
-router.route("/addUserToFolder")
-.post(foldersController.addUserToFolder);
-
-router.route("/addFolderToUser")
-.post(foldersController.addFolderToUser);
-
 router.route("/addFolderToUser")
 .post(foldersController.addFolderToUser);
 
 router.route("/addLink")
 .post(foldersController.addLink);
 
+router.route("/deleteFolder/:folderId")
+.delete(foldersController.deleteFolder);
+
+router.route("/deleteUserFolder/:userId/:folderId")
+.delete(foldersController.deleteUserFolder);
 
 module.exports = router;
 
