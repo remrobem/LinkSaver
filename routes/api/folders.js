@@ -43,6 +43,9 @@ router.route("/deleteFolder/:folderId")
 router.route("/deleteUserFolder/:userId/:folderId")
 .delete(foldersController.deleteUserFolder);
 
+router.route("/deleteLink/:folderId/:link")
+.delete(foldersController.addLink);
+
 module.exports = router;
 
 // router.route.get("/api/user/:id", function (req, res) {
