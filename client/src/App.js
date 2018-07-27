@@ -122,12 +122,8 @@ class App extends Component {
   };
 
   deleteFolder = (folderID) => {
-    //axios delete request to folder ID to remove user from user access.
-    //must return new object for folder
-
     console.log(`Folder ID of ${folderID} to be deleted`);
-
-    api.deleteFolder(folderID);
+    api.deleteFolder(folderID)
   };
 
   componentDidMount(){
