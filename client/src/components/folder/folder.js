@@ -7,7 +7,7 @@ const Folder = props => (
 
         <div className="row" onClick={() => props.setActiveFolder(props._id, "active")}>
             <span className="ml-2 col-1"></span>
-            <h4 className="col-6">FOLDER TITLE TEXT {props.title}</h4>
+            <h4 className="col-6 mt-4">FOLDER TITLE TEXT {props.title}</h4>
             <div className="col-4">
                 <img onClick={() => props.copy(props.folderURL)} className="copy-icon m-1" id="copyButton" alt="Copy Link To Clipboard" src="./assets/images/icons/link.png"></img>
                 <img className="delete-icon m-1" id="deleteButton" alt="Delete Link From Folder" src="./assets/images/icons/delete.png"></img>

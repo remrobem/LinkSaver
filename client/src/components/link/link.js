@@ -2,14 +2,14 @@ import React from "react";
 import "./link.css";
 
 const LinkComp = props => (
-    <div className="col-12 my-2 py-2 bg-secondary text-white border-2 border-white">
+    <div className="col-12 my-2 py-2 bg-light text-dark border-2 border-white">
 
         <div className="row">
             <span className="ml-2 col-2"></span>
-            <a className="link font-weight-bold" href="http://www.google.com" rel="noopener noreferrer" target="_blank">{props.link}LINK SNYOPSIS</a>
+            <a className="link font-weight-bold mt-2" href="http://www.google.com" rel="noopener noreferrer" target="_blank">{props.link}LINK SNYOPSIS</a>
         </div>
 
-        <div className="spacer row col-12 bg-white mx-2 my-2"></div>
+        <div className="spacer row col-12 bg-dark mx-2 my-2"></div>
 
         <div className="row">
             <span className="ml-2 col-1"></span>
