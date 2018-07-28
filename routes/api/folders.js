@@ -8,18 +8,18 @@ const foldersController = require("../../controller/foldersController");
 //write in all routes so they are able to be hit by postman
 
 //Get Routes
-//Get Folders for user    /returnUserFolders/:userId
+//Get Folders for user              /returnUserFolders/:userId
 
 //Post Routes
-//Post New Folder (userID) /createFolder   /addFolderToUser
-//Post New Link (folder ID) /addLink
+//Post New Folder (userID)          /createFolder   /addFolderToUser
+//Post New Link (folder ID)         /addLink
 //Create new user
 //Share folder (User ID, folder ID) /returnUserFolders/:userId   /addFolderToUser
 
 //Delete Routes
-//Delete folder             /deleteFolder  (still needs to delete folder from all users)
-//Delete folder from user   /deleteUserFolder/user_id/folder_id
-//Delete Link
+//Delete folder                     /deleteFolder  (still needs to delete folder from all users)
+//Delete folder from user           /deleteUserFolder/:user_id/:folder_id
+//Delete Link                       /deleteLink
 //Delete User
 
 router.route("/returnAllFolders")
@@ -37,14 +37,17 @@ router.route("/addFolderToUser")
 router.route("/addLink")
 .post(foldersController.addLink);
 
-router.route("/deleteFolder/:folderId")
-.delete(foldersController.deleteFolder);
+router.route("/deleteFolder")
+.post(foldersController.deleteFolder);
 
-router.route("/deleteUserFolder/:userId/:folderId")
-.delete(foldersController.deleteUserFolder);
+router.route("/deleteUserFolder")
+.post(foldersController.deleteUserFolder);
 
-router.route("/deleteLink/:folderId/:link")
-.delete(foldersController.addLink);
+router.route("/deleteLink")
+.post(foldersController.deleteLink);
+
+router.route("/deleteUser/:userId")
+.delete(foldersController.deleteUser);
 
 module.exports = router;
 

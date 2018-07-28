@@ -39,6 +39,16 @@
 * first parameter if the _id for the user
 * second parameter is the _id for the folder
 
+/deleteLink
+
+* http://localhost:3000/api/folders/deleteLink
+* POST
+* req.body:
+    * { folder_id: _id of the folder, url: "url to be deleted"}
+
+
+
+
 /returnAllFolders/
 
 * http://localhost:3000/api/folders/returnAllFolders/
