@@ -17,10 +17,25 @@ if (process.env.NODE_ENV === "production") {
 //   res.sendFile(path.join(__dirname, "./client/public/index.html"));
 // })
 
+
+
 app.use(routes);
 
-// Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/linksaver");
+var databaseUri = "mongodb://localhost/linksaver";
+
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI);
+} else {
+  mongoose.connect(databaseUri);
+}
+
+mongoose.connection.on("error", function(error) {
+  console.log("Mongoose Error: ", error);
+});
+
+mongoose.connection.once("open", function() {
+  console.log("Mongoose connection successful.");
+});
 
 // Start the API server
 app.listen(PORT, function() {
