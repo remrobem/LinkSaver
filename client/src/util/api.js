@@ -10,43 +10,41 @@ export default {
     getFolderbyId: function (id) {
         return axios.get(`${baseURL}${id}`);
     },
-
     getFolderbyUser: function (userID) {
         return axios.get(`${baseURL}returnUserFolders/${userID}`);
     },
     //----------
     //Post
     //----------
-    createUser: function(userObj) {
-        return axios.post(`${baseURL}`, {userObj});
+    createUser: function (userObj) {
+        return axios.post(`${baseURL}/addUser`, { userObj });
     },
-    createfolder: function(folderObj) {
-        return axios.post(`${baseURL}/createFolder/`, {folderObj});
+    createfolder: function (folderObj) {
+        return axios.post(`${baseURL}/createFolder/`, { folderObj });
     },
-    addFolderToUser: function(userFolderObj) {
-        return axios.post(`${baseURL}addFolderToUser/`, {userFolderObj});
+    addFolderToUser: function (userFolderObj) {
+        return axios.post(`${baseURL}addFolderToUser/`, { userFolderObj });
     },
-
-    createLink: function(linkObj) {
-        return axios.post(`${baseURL}addLink/`, {linkObj});
+    createLink: function (linkObj) {
+        return axios.post(`${baseURL}addLink/`, { linkObj });
         //MUST RETURN NEW FOLDER INFO
+    },
+    deleteFolder: function (folderID, folderObj) {
+        return axios.post(`${baseURL}/deleteFolder/${folderID}`, folderObj);
+        //MUST RETURN NEW USER FOLDER INFO
     },
     //----------
     //Delete
     //----------
-    deleteUser: function(userID) {
+    deleteUser: function (userID) {
         return axios.delete(`${baseURL}${userID}`);
-    }
-    ,
-    deleteFolder: function(folderID) {
-        return axios.delete(`${baseURL}/deleteFolder/${folderID}`);
-        //MUST RETURN NEW USER FOLDER INFO
-    }
-    ,
-    deleteLink:  function(folderID, linkURL) {
-        return axios.delete(`${baseURL}/deletelink/`, {linkURL});
+    },
+    deleteUserFolder: function (userID) {
+        return axios.delete(`${baseURL}deleteUserFolder/${userID}`);
+    },
+    deleteLink: function (linkURL) {
+        return axios.delete(`${baseURL}/deletelink/`, { linkURL });
         //MUST RETURN NEW FOLDER
-    }
-    ,
+    },
 
 }

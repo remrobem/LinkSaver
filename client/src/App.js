@@ -123,6 +123,16 @@ class App extends Component {
     });
   };
 
+  createUser = event => {
+
+
+  };
+
+  deleteUser = event => {
+
+
+  };
+
   //Folder Functions
   //----------
   addFolder = () => {
@@ -142,7 +152,8 @@ class App extends Component {
 
   deleteFolder = (folderID) => {
     console.log(`Folder ID of ${folderID} to be deleted`);
-    api.deleteFolder(folderID)
+    const folderObj = {folder_id: folderID};
+    api.deleteFolder(folderID,folderObj);
   };
 
   //Link Functions
@@ -167,8 +178,9 @@ class App extends Component {
   deleteLink = (folderID, linkUrl) => {
     //axios delete request to remove link from folder
     //must return new object for folder
+    const linkObj = {folder_id:folderID, url:linkUrl};
     console.log(`Link of  Link URL: ${linkUrl} to be deleted from Folder ID of ${folderID}`)
-    api.deleteLink(folderID, linkUrl);
+    api.deleteLink(linkObj);
 
   };
 
