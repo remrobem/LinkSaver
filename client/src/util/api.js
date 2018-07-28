@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = '/api/folders/'
+const baseURL = 'http://localhost:3000/api/folders/'
 
 export default {
 

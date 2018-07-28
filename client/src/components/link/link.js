@@ -15,7 +15,7 @@ const LinkComp = props => (
             <span className="ml-2 col-1"></span>
             <div className="col-6">
                 <p>
-                    {props.description}TEXT FROM DESCRIPTION FIELD I am generating filler text which serves as the first 144 characters of a link.
+                    {props.description}
                 </p>
             </div>
             <div className="col-4">

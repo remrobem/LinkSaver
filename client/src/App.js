@@ -35,8 +35,10 @@ class App extends Component {
   state = {
     user: "",
     userID: "",
-    userFolderList: [{ name: "1", _id: "1", description: "Test data in multiples of 1", links: [{ url: "1", name: "1" }, { url: "2", name: "2" }, { url: "3", name: "3" }] }, { name: "2", _id: "2", description: "Test data in multiples of 2", links: [{ url: "2", name: "2" }, { url: "4", name: "4" }, { url: "6", name: "6" }] }, { name: "3", _id: "3", description: "Test data in multiples of 3", links: [{ url: "3", name: "3" }, { url: "6", name: "6" }, { url: "9", name: "9" }] }],
-    innactiveFolders: [{ name: "1", _id: "1", description: "Test data in multiples of 1", links: [{ url: "1", name: "1" }, { url: "2", name: "2" }, { url: "3", name: "3" }] }, { name: "2", _id: "2", description: "Test data in multiples of 2", links: [{ url: "2", name: "2" }, { url: "4", name: "4" }, { url: "6", name: "6" }] }, { name: "3", _id: "3", description: "Test data in multiples of 3", links: [{ url: "3", name: "3" }, { url: "6", name: "6" }, { url: "9", name: "9" }] }],
+    //userFolderList: [{ name: "1", _id: "1", description: "Test data in multiples of 1", links: [{ url: "1", name: "1" }, { url: "2", name: "2" }, { url: "3", name: "3" }] }, { name: "2", _id: "2", description: "Test data in multiples of 2", links: [{ url: "2", name: "2" }, { url: "4", name: "4" }, { url: "6", name: "6" }] }, { name: "3", _id: "3", description: "Test data in multiples of 3", links: [{ url: "3", name: "3" }, { url: "6", name: "6" }, { url: "9", name: "9" }] }],
+    //innactiveFolders: [{ name: "1", _id: "1", description: "Test data in multiples of 1", links: [{ url: "1", name: "1" }, { url: "2", name: "2" }, { url: "3", name: "3" }] }, { name: "2", _id: "2", description: "Test data in multiples of 2", links: [{ url: "2", name: "2" }, { url: "4", name: "4" }, { url: "6", name: "6" }] }, { name: "3", _id: "3", description: "Test data in multiples of 3", links: [{ url: "3", name: "3" }, { url: "6", name: "6" }, { url: "9", name: "9" }] }],
+    userFolderList:[],
+    innactiveFolders: [],
     activeFolders: [],
     newFolder: "default",
     newDescription: "default",
@@ -100,18 +102,39 @@ class App extends Component {
 
   //User Functions
   //----------
+
   setUser = event => {
     let userAuthName;
     let userAuthID;
+    let userFolders = [];
 
     //REQUIRE AUTENTICATION LOGIC HERE
 
-    userAuthName = "Some Value For User Name"
-    userAuthID = "Some Value For User ID"
+    userAuthName = "User One"
+    userAuthID = "5b5c9d75e862220468afc741"
+
+    api.getFolderbyUser(userAuthID).then(response => {
+      console.log(response.data);
+      userFolders = response.data.folders
+      console.log(userFolders);
+      this.setState({
+        ...this.state,
+        user: userAuthName,
+        userID: userAuthID,
+        userFolderList: userFolders,
+        innactiveFolders: userFolders,
+      });
+      //console.log(this.state);
+
+    })
+
+
     this.setState({
       ...this.state,
       user: userAuthName,
-      userID: userAuthID
+      userID: userAuthID,
+      userFolderList: userFolders,
+      innactiveFolders: userFolders,
     });
   };
 
@@ -205,7 +228,7 @@ class App extends Component {
                 _id={folder._id}
                 folderURL={`linksaver/folder/${folder._id}`}
                 name={folder.name}
-                links={folder.links.sort(dynamicSort)}
+                links={folder.links}
                 description={folder.description}
                 handleInputChange={this.handleInputChange}
                 setActiveFolder={this.setActiveFolder}
