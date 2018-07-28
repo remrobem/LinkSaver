@@ -45,7 +45,19 @@ class App extends Component {
   copy = (coppiedText) => {
     coppiedText.select();
     document.execCommand("copy");
-  }
+  };
+
+  dynamicSort = (property) => {
+    let sortOrder = 1;
+    if (property[0] === "-") {
+      sortOrder = -1;
+      property = property.substr(1);
+    }
+    return function (a, b) {
+      const result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+      return result * sortOrder;
+    }
+  };
 
   //GUI Functions
   //----------
@@ -69,6 +81,9 @@ class App extends Component {
 
       default:
     }
+    //let active = newActiveFolders.sort(dynamicSort("name"));
+    //let innactive = newInnactiveFolders.sort(dynamicSort("name"));
+
     this.setState({
       ...this.state,
       activeFolders: newActiveFolders,
@@ -126,7 +141,7 @@ class App extends Component {
     api.deleteFolder(folderID)
   };
 
-  componentDidMount(){
+  componentDidMount() {
   };
 
 

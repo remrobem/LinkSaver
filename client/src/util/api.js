@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = '/api/'
+const baseURL = '/api/folders/'
 
 export default {
 
@@ -8,44 +8,43 @@ export default {
     //Get
     //----------
     getFolderbyId: function (id) {
-        return axios.get(`${baseURL}/folder/${id}`);
+        return axios.get(`${baseURL}${id}`);
     },
 
     getFolderbyUser: function (userID) {
-        return axios.get(`${baseURL}/folder/${userID}`);
+        return axios.get(`${baseURL}returnUserFolders/${userID}`);
     },
     //----------
     //Post
     //----------
     createUser: function(userObj) {
-        return axios.post(`${baseURL}/user/`, {userObj});
+        return axios.post(`${baseURL}`, {userObj});
     },
     createfolder: function(folderObj, userID) {
-        return axios.post(`${baseURL}/folder/:${userID}`, {folderObj});
-        //MUST RETURN NEW USER INFO
+        return axios.post(`${baseURL}:${userID}`, {folderObj});
     },
-    //----------
-    //Put
-    //----------
+    addFolderToUser: function(userFolderObj) {
+        return axios.post(`${baseURL}addFolderToUser/`, {userFolderObj});
+    },
+
     createLink: function(folderID, linkObj) {
-        return axios.put(`${baseURL}/folder/${folderID}`, {linkObj});
+        return axios.post(`${baseURL}addLink/`, {linkObj});
         //MUST RETURN NEW FOLDER INFO
     },
     //----------
     //Delete
     //----------
     deleteUser: function(userID) {
-        return axios.delete(`${baseURL}/user/${userID}`);
+        return axios.delete(`${baseURL}${userID}`);
     }
     ,
     deleteFolder: function(folderID) {
-        return axios.delete(`${baseURL}/folder/${folderID}`);
+        return axios.delete(`${baseURL}/deleteFolder/${folderID}`);
         //MUST RETURN NEW USER FOLDER INFO
     }
     ,
     deleteLink:  function(folderID, linkURL) {
-        return axios.delete(`${baseURL}/folder/${folderID}`, {linkURL});
-
+        return axios.delete(`${baseURL}/deletelink/`, {linkURL});
         //MUST RETURN NEW FOLDER
     }
     ,
