@@ -61,8 +61,12 @@ module.exports = {
 
   deleteUserFolder: function(req, res) {
     db.User
-      .updateOne({_id: req.body.userId},{ $pullAll: {folders: [req.body.folderId] }})
-      .then(dbFolder => res.json(dbFolder))
+      .findOneAndUpdate({ _id: req.body.user_id},{ $pullAll: {folders: [req.body.folder_id] }})
+      .then( dbFolder => db.Folder
+        .update({users: [req.body.user_id] }, 
+                { $pullAll: { users: [req.body.user_id] }
+                }))
+        .then(dbFolder => res.json(dbFolder))
       .catch(err => res.status(400).json(err));
   },
 
