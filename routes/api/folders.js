@@ -49,6 +49,9 @@ router.route("/deleteLink")
 router.route("/deleteUser/:userId")
 .delete(foldersController.deleteUser);
 
+router.route("/addUser")
+.post(foldersController.addUser);
+
 module.exports = router;
 
 // router.route.get("/api/user/:id", function (req, res) {
