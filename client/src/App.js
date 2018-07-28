@@ -11,9 +11,26 @@ import Navbar from './components/navbar/navbar';
 import User from './components/user/user';
 import Login from './components/login/login';
 
+
+
+function dynamicSort (a , b) {
+  const nameA = a.name;
+  const nameB = b.name;
+  console.log(nameA);
+  console.log(nameB);
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+  return 0;
+}
+
 //----------
 //Define State
 //----------
+
 class App extends Component {
   state = {
     user: "",
@@ -46,18 +63,6 @@ class App extends Component {
     document.execCommand("copy");
   };
 
-  dynamicSort = (property) => {
-    let sortOrder = 1;
-    if (property[0] === "-") {
-      sortOrder = -1;
-      property = property.substr(1);
-    }
-    return function (a, b) {
-      const result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-      return result * sortOrder;
-    }
-  };
-
   //GUI Functions
   //----------
   setActiveFolder = (folderID, inputCase) => {
@@ -80,13 +85,13 @@ class App extends Component {
 
       default:
     }
-    //let active = newActiveFolders.sort(dynamicSort("name"));
-    //let innactive = newInnactiveFolders.sort(dynamicSort("name"));
+    let active = newActiveFolders.sort(dynamicSort);
+    let innactive = newInnactiveFolders.sort(dynamicSort);
 
     this.setState({
       ...this.state,
-      activeFolders: newActiveFolders,
-      innactiveFolders: newInnactiveFolders
+      activeFolders: active,
+      innactiveFolders: innactive
     });
   };
 
@@ -139,7 +144,6 @@ class App extends Component {
     console.log(`Folder ID of ${folderID} to be deleted`);
     api.deleteFolder(folderID)
   };
-
 
   //Link Functions
   //----------
