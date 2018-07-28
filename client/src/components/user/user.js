@@ -28,7 +28,7 @@ const UserComp = props => (
                         onChange={props.handleInputChange}
                     />
                 </div>
-                <button className="btn btn-success my-2" onClick={() => props.addFolder(props.userID)}>Add Folder</button>
+                <button className="btn btn-success my-2" onClick={() => props.addFolder()}>Add Folder</button>
             </div>
         </div>
         <div className="container row">

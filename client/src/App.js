@@ -23,7 +23,6 @@ class App extends Component {
     activeFolders: [],
     newFolder: "default",
     newDescription: "default",
-    newname: "default",
     newURL: "default",
     searchTerm: ""
   };
@@ -121,13 +120,13 @@ class App extends Component {
 
   //Folder Functions
   //----------
-  addFolder = (userID) => {
-    const name = this.state.newFolder;
+  addFolder = () => {
+    const Name = this.state.newFolder;
     const Description = this.state.newDescription;
-    const newFolder = { name: name, description: Description, links: [] };
+    const newFolder = { name: Name, description: Description};
     console.log(newFolder);
 
-    api.createfolder(newFolder, userID);
+    api.createfolder(newFolder);
 
     this.setState({
       ...this.state,
@@ -141,26 +140,23 @@ class App extends Component {
     api.deleteFolder(folderID)
   };
 
-  componentDidMount() {
-  };
-
 
   //Link Functions
   //----------
   addLink = (folderID) => {
-    const name = this.state.newname;
+    const search = this.state.searchTerm;
     const URL = this.state.newURL;
     const description = this.state.newDescription;
-    const newLink = { folderID: folderID, name: name, url: URL, description: description };
+    const newLink = {url: URL, description: description, searchTerm: search, folder_id: folderID};
     console.log(newLink);
 
-    api.createLink(folderID, newLink);
+    api.createLink(newLink);
 
     this.setState({
       ...this.state,
       newUrl: "",
       newDescription: "",
-      newname: "",
+      searchTerm: "",
     });
   };
 

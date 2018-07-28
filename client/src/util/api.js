@@ -20,14 +20,14 @@ export default {
     createUser: function(userObj) {
         return axios.post(`${baseURL}`, {userObj});
     },
-    createfolder: function(folderObj, userID) {
-        return axios.post(`${baseURL}:${userID}`, {folderObj});
+    createfolder: function(folderObj) {
+        return axios.post(`${baseURL}/createFolder/`, {folderObj});
     },
     addFolderToUser: function(userFolderObj) {
         return axios.post(`${baseURL}addFolderToUser/`, {userFolderObj});
     },
 
-    createLink: function(folderID, linkObj) {
+    createLink: function(linkObj) {
         return axios.post(`${baseURL}addLink/`, {linkObj});
         //MUST RETURN NEW FOLDER INFO
     },
