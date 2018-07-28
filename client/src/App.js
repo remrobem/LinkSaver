@@ -14,8 +14,8 @@ import Login from './components/login/login';
 
 
 function dynamicSort (a , b) {
-  const nameA = a.name;
-  const nameB = b.name;
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
   console.log(nameA);
   console.log(nameB);
   if (nameA < nameB) {
@@ -205,7 +205,7 @@ class App extends Component {
                 _id={folder._id}
                 folderURL={`linksaver/folder/${folder._id}`}
                 name={folder.name}
-                links={folder.links}
+                links={folder.links.sort(dynamicSort)}
                 description={folder.description}
                 handleInputChange={this.handleInputChange}
                 setActiveFolder={this.setActiveFolder}
