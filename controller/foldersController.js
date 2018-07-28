@@ -34,7 +34,6 @@ module.exports = {
     let newUserFolder = {folders: req.body.folder_id, user_id: req.body.user_id};
     db.User
       .findOneAndUpdate({_id: req.body.user_id}, { $push: {folders: req.body.folder_id}}, {new:true})
-      .then(dbFolder => res.json(dbFolder))
       .then(
         db.Folder
           .findOneAndUpdate({_id: req.body.folder_id}, { $push: {users: req.body.user_id}}, {new:true})
@@ -50,22 +49,37 @@ module.exports = {
       .catch(err => res.status(400).json(err));
   },
   
-  deleteFolder: function(req, res) {
+  deleteLink: function(req, res) {
     db.Folder
-      .findOneAndDelete({ _id: req.params.folderId })
-      // .then(dbFolder => dbFolder.remove())
-      // .then(dbFolder => res.json(dbFolder))
-      .then( db.User
-              .updateMany({folders: [req.params.folderId]}, { $pullAll: { folders: [req.params.folderId] }}))
-              .then(dbFolder => res.json(dbFolder))
+      .findOneAndUpdate(  { _id: req.body.folder_id }, 
+                          { $pull: { links: {url: req.body.url} }},
+                          {new: true}
+                        )
+      .then(dbFolder => res.json(dbFolder))
       .catch(err => res.status(400).json(err));
   },
 
   deleteUserFolder: function(req, res) {
     db.User
-      // .findOne({ _id: req.params.userId})
-      // .populate('folders')
-      .updateOne({_id: req.params.userId},{ $pullAll: {folders: [req.params.folderId] }})
+      .updateOne({_id: req.body.userId},{ $pullAll: {folders: [req.body.folderId] }})
+      .then(dbFolder => res.json(dbFolder))
+      .catch(err => res.status(400).json(err));
+  },
+
+  deleteFolder: function(req, res) {
+    db.Folder
+      .findOneAndDelete({ _id: req.body.folder_id })
+      .then( dbFolder => db.User
+              .update({folders: [req.body.folder_id] }, 
+                      { $pullAll: { folders: [req.body.folder_id] }
+                      }))
+              .then(dbFolder => res.json(dbFolder))
+      .catch(err => res.status(400).json(err));
+  },
+
+  deleteUser: function(req, res) {
+    db.User
+      .findOneAndDelete({ _id: req.params.userId })
       .then(dbFolder => res.json(dbFolder))
       .catch(err => res.status(400).json(err));
   }
