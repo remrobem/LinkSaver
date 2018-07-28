@@ -25,19 +25,19 @@
 * req.body:
     * { folder_id: _id of folder, user_id: _id of user }
 
-/deleteFolder/5b5b494ae6e88a4d53696153
+/deleteFolder
 
 * http://localhost:3000/api/folders/deleteFolder/:folderId
-* DELETE
-* Parameter is the _id for the folder
-** still have issue removing the folder from users
+* POST
+* req.body
+    * { folder_id: _id of folder }
 
 /deleteUserFolder/5b5b494ae6e88a4d53696152/5b5b494ae6e88a4d53696154
 
-* http://localhost:3000/api/folders/deleteUserFolder/:userId/folderId
-* DELETE
-* first parameter if the _id for the user
-* second parameter is the _id for the folder
+* http://localhost:3000/api/folders/deleteUserFolder
+* POST
+* req.body:
+    * { folder_id: _id of folder, user_id: _id of user }
 
 /deleteLink
 
@@ -45,9 +45,6 @@
 * POST
 * req.body:
     * { folder_id: _id of the folder, url: "url to be deleted"}
-
-
-
 
 /returnAllFolders/
 
