@@ -39,6 +39,12 @@
 * req.body
     * { folder_id: _id of folder }
 
+
+## /deleteUser
+
+* http://localhost:3000/api/folders/deleteUser/:userId
+* DELETE
+
 ## /deleteUserFolder/5b5b494ae6e88a4d53696152/5b5b494ae6e88a4d53696154
 
 * http://localhost:3000/api/folders/deleteUserFolder
