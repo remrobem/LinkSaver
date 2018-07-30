@@ -36,7 +36,7 @@ const Folder = props => (
         <div className="container mt-3">
             <h5>Add a new link</h5>
             <div className="form-group">
-                <label>name:</label>
+                <label>Search Term:</label>
                 <input
                     type="text"
                     className="form-control col-8"
