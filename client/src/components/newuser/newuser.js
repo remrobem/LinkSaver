@@ -3,9 +3,9 @@ import "./newuser.css";
 
 const NewUser = props => (
     <div className="row bg-dark col-12 text-white fullpage rounded">
-        <div className="col-md-4 col-sm-1">
+        <div className="col-md-2 col-sm-1">
         </div>
-        <section className="col-md-4 col-sm-10 bg-secondary mt-5 py-3 rounded border border-white">
+        <section className="col-md-8 col-sm-10 bg-secondary mt-5 py-3 rounded border border-white">
             <h2>
                 Create Your Account
         </h2>
@@ -46,7 +46,7 @@ const NewUser = props => (
             <span className="px-1"></span>
             <button type="button" className="btn btn-primary px-3" onClick={props.createUser(props.newLoginName, props.newLoginEmail, props.newPassword)}> Create New Account</button>
         </section>
-        <div className="col-md-4 col-sm-1">
+        <div className="col-md-2 col-sm-1">
         </div>
     </div>
 );

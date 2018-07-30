@@ -175,6 +175,7 @@ class App extends Component {
     const Name = this.state.newFolder;
     const Description = this.state.newDescription;
     const newFolder = { name: Name, description: Description };
+    console.log(newFolder);
     api.createfolder(newFolder).then( () => {
       const userID = this.state.userID;
       this.reloadfolders(userID);
