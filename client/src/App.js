@@ -289,7 +289,8 @@ class App extends Component {
   //Render Page
   //----------
   render() {
-    if (this.state.user)
+    // if (this.state.user)
+    if (this.state.authenticated)
       return (
         <div className="bg-dark">
           <Navbar logout={this.logout} />
