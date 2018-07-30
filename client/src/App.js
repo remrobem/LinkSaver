@@ -10,25 +10,11 @@ import InnactiveFolder from './components/innactiveFolder/innactiveFolder';
 import Navbar from './components/navbar/navbar';
 import User from './components/user/user';
 import Login from './components/login/login';
-
-
-
-function dynamicSort(a, b) {
-  const nameA = a.name.toUpperCase();
-  const nameB = b.name.toUpperCase();
-  if (nameA < nameB) {
-    return -1;
-  }
-  if (nameA > nameB) {
-    return 1;
-  }
-  return 0;
-}
+import NewUser from './components/newuser/newuser';
 
 //----------
 //Define State
 //----------
-
 class App extends Component {
   state = {
     user: "",
@@ -39,7 +25,10 @@ class App extends Component {
     newFolder: "default",
     newDescription: "default",
     newURL: "default",
-    searchTerm: ""
+    searchTerm: "",
+    newLoginName: "",
+    newLoginEmail:"",
+    newPassword:"",
   };
 
   //----------
@@ -83,13 +72,32 @@ class App extends Component {
 
       default:
     }
-    let active = newActiveFolders.sort(dynamicSort);
-    let innactive = newInnactiveFolders.sort(dynamicSort);
+    let active = newActiveFolders.sort(this.dynamicSort);
+    let innactive = newInnactiveFolders.sort(this.dynamicSort);
 
     this.setState({
       ...this.state,
       activeFolders: active,
       innactiveFolders: innactive
+    });
+  };
+
+  dynamicSort = (a, b) => {
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+    return 0;
+  }
+
+  openPanel = () => {
+    this.setState({
+      ...this.state,
+      user: "new"
     });
   };
 
@@ -99,7 +107,7 @@ class App extends Component {
   //User Functions
   //----------
 
-  setUser = event => {
+  setUser = (userID) => {
     let userAuthName;
     let userAuthID;
     let userFolders = [];
@@ -119,15 +127,6 @@ class App extends Component {
         innactiveFolders: userFolders,
       });
     })
-
-
-    this.setState({
-      ...this.state,
-      user: userAuthName,
-      userID: userAuthID,
-      userFolderList: userFolders,
-      innactiveFolders: userFolders,
-    });
   };
 
   logout = event => {
@@ -141,21 +140,33 @@ class App extends Component {
       newFolder: "default",
       newDescription: "default",
       newURL: "default",
-      searchTerm: ""
+      searchTerm: "",
     });
   };
 
-  createUser = (newUsername, userEmail) => {
-    const userObj = { name: newUsername, email: userEmail };
-    api.createUser(userObj);
+  createUser = (newUsername, newUserEmail, newUserPassword) => {
+    const userObj = { name: newUsername, email: newUserEmail, password: newUserPassword };
+    api.createUser(userObj).then( (response) => {
+        this.setUser(response._id)
+    });
   };
 
   deleteUser = (userFolderID, userID) => {
     const folderObj = { folder_id: userFolderID, user_id: userID };
     api.deleteUserFolder(folderObj);
     api.deleteUser(userID);
-    logout();
+    this.logout();
+  };
 
+  reloadFolders = (userID) => {
+    api.getFolderbyUser(userID).then(response => {
+      const userFolders = response.data.folders
+      this.setState({
+        ...this.state,
+        userFolderList: userFolders,
+        innactiveFolders: userFolders,
+      });
+    });
   };
 
   //Folder Functions
@@ -164,9 +175,10 @@ class App extends Component {
     const Name = this.state.newFolder;
     const Description = this.state.newDescription;
     const newFolder = { name: Name, description: Description };
-
-    api.createfolder(newFolder);
-
+    api.createfolder(newFolder).then( () => {
+      const userID = this.state.userID;
+      this.reloadfolders(userID);
+    });
     this.setState({
       ...this.state,
       newFolder: "",
@@ -177,7 +189,10 @@ class App extends Component {
   deleteFolder = (folderID) => {
     console.log(`Folder ID of ${folderID} to be deleted`);
     const folderObj = { folder_id: folderID };
-    api.deleteFolder(folderID, folderObj);
+    api.deleteFolder(folderID, folderObj).then( () => {
+      const userID = this.state.userID;
+      this.reloadfolders(userID);
+    });
   };
 
   //Link Functions
@@ -187,10 +202,10 @@ class App extends Component {
     const URL = this.state.newURL;
     const description = this.state.newDescription;
     const newLink = { url: URL, description: description, searchTerm: search, folder_id: folderID };
-    console.log(newLink);
-
-    api.createLink(newLink);
-
+    api.createLink(newLink).then( () => {
+      const userID = this.state.userID;
+      this.reloadfolders(userID);
+    });
     this.setState({
       ...this.state,
       newUrl: "",
@@ -200,18 +215,18 @@ class App extends Component {
   };
 
   deleteLink = (folderID, linkUrl) => {
-    //axios delete request to remove link from folder
-    //must return new object for folder
     const linkObj = { folder_id: folderID, url: linkUrl };
-    api.deleteLink(linkObj);
-
+    api.deleteLink(linkObj).then( () => {
+      const userID = this.state.userID;
+      this.reloadfolders(userID);
+    });
   };
 
   //----------
   //Render Page
   //----------
   render() {
-    if (this.state.user)
+    if (this.state.user && this.state.user !== "new")
       return (
         <div className="bg-dark">
           <Navbar
@@ -250,13 +265,25 @@ class App extends Component {
           </User>
         </div>
       );
-
+    else if (this.state.user === "new") {
+      return (
+        <NewUser
+        handleInputChange={this.handleInputChange}
+        createUser={this.createUser}
+        setUser={this.setUser}
+        newLoginName={this.state.newLoginName}
+        newLoginEmail={this.state.newLoginEmail}
+        newPassword={this.state.newPassword}
+        />
+      );
+    }
     else {
       return (
         <div>
           <Login
             handleInputChange={this.handleInputChange}
             setUser={this.setUser}
+            openPanel = {this.openPanel}
           />
         </div>
       );
