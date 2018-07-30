@@ -1,7 +1,5 @@
 //----------
 //Declare Imports
-//----------
-
 import React, { Component } from "react";
 import "./App.css";
 import api from './util/api'
@@ -11,10 +9,10 @@ import Navbar from './components/navbar/navbar';
 import User from './components/user/user';
 import Login from './components/login/login';
 import NewUser from './components/newuser/newuser';
+//import Library from './util/library'
 
 //----------
 //Define State
-//----------
 class App extends Component {
   state = {
     user: "",
@@ -27,16 +25,18 @@ class App extends Component {
     newURL: "default",
     searchTerm: "",
     newLoginName: "",
-    newLoginEmail:"",
-    newPassword:"",
+    newLoginEmail: "",
+    newPassword: "",
   };
 
+  
   //----------
   //Function Library
   //----------
 
   //Helper Functions
   //----------
+
   handleInputChange = event => {
     const { name, value } = event.target;
     console.log(name, value);
@@ -222,6 +222,7 @@ class App extends Component {
     });
   };
 
+
   //----------
   //Render Page
   //----------
@@ -268,12 +269,12 @@ class App extends Component {
     else if (this.state.user === "new") {
       return (
         <NewUser
-        handleInputChange={this.handleInputChange}
-        createUser={this.createUser}
-        setUser={this.setUser}
-        newLoginName={this.state.newLoginName}
-        newLoginEmail={this.state.newLoginEmail}
-        newPassword={this.state.newPassword}
+          handleInputChange={this.handleInputChange}
+          createUser={this.createUser}
+          setUser={this.setUser}
+          newLoginName={this.state.newLoginName}
+          newLoginEmail={this.state.newLoginEmail}
+          newPassword={this.state.newPassword}
         />
       );
     }
@@ -283,7 +284,7 @@ class App extends Component {
           <Login
             handleInputChange={this.handleInputChange}
             setUser={this.setUser}
-            openPanel = {this.openPanel}
+            openPanel={this.openPanel}
           />
         </div>
       );
