@@ -13,11 +13,9 @@ import Login from './components/login/login';
 
 
 
-function dynamicSort (a , b) {
+function dynamicSort(a, b) {
   const nameA = a.name.toUpperCase();
   const nameB = b.name.toUpperCase();
-  console.log(nameA);
-  console.log(nameB);
   if (nameA < nameB) {
     return -1;
   }
@@ -35,9 +33,7 @@ class App extends Component {
   state = {
     user: "",
     userID: "",
-    //userFolderList: [{ name: "1", _id: "1", description: "Test data in multiples of 1", links: [{ url: "1", name: "1" }, { url: "2", name: "2" }, { url: "3", name: "3" }] }, { name: "2", _id: "2", description: "Test data in multiples of 2", links: [{ url: "2", name: "2" }, { url: "4", name: "4" }, { url: "6", name: "6" }] }, { name: "3", _id: "3", description: "Test data in multiples of 3", links: [{ url: "3", name: "3" }, { url: "6", name: "6" }, { url: "9", name: "9" }] }],
-    //innactiveFolders: [{ name: "1", _id: "1", description: "Test data in multiples of 1", links: [{ url: "1", name: "1" }, { url: "2", name: "2" }, { url: "3", name: "3" }] }, { name: "2", _id: "2", description: "Test data in multiples of 2", links: [{ url: "2", name: "2" }, { url: "4", name: "4" }, { url: "6", name: "6" }] }, { name: "3", _id: "3", description: "Test data in multiples of 3", links: [{ url: "3", name: "3" }, { url: "6", name: "6" }, { url: "9", name: "9" }] }],
-    userFolderList:[],
+    userFolderList: [],
     innactiveFolders: [],
     activeFolders: [],
     newFolder: "default",
@@ -114,9 +110,7 @@ class App extends Component {
     userAuthID = "5b5c9d75e862220468afc741"
 
     api.getFolderbyUser(userAuthID).then(response => {
-      console.log(response.data);
       userFolders = response.data.folders
-      console.log(userFolders);
       this.setState({
         ...this.state,
         user: userAuthName,
@@ -124,8 +118,6 @@ class App extends Component {
         userFolderList: userFolders,
         innactiveFolders: userFolders,
       });
-      //console.log(this.state);
-
     })
 
 
@@ -142,17 +134,27 @@ class App extends Component {
     this.setState({
       ...this.state,
       user: "",
-      userID: ""
+      userID: "",
+      userFolderList: [],
+      innactiveFolders: [],
+      activeFolders: [],
+      newFolder: "default",
+      newDescription: "default",
+      newURL: "default",
+      searchTerm: ""
     });
   };
 
-  createUser = event => {
-
-
+  createUser = (newUsername, userEmail) => {
+    const userObj = { name: newUsername, email: userEmail };
+    api.createUser(userObj);
   };
 
-  deleteUser = event => {
-
+  deleteUser = (userFolderID, userID) => {
+    const folderObj = { folder_id: userFolderID, user_id: userID };
+    api.deleteUserFolder(folderObj);
+    api.deleteUser(userID);
+    logout();
 
   };
 
@@ -161,8 +163,7 @@ class App extends Component {
   addFolder = () => {
     const Name = this.state.newFolder;
     const Description = this.state.newDescription;
-    const newFolder = { name: Name, description: Description};
-    console.log(newFolder);
+    const newFolder = { name: Name, description: Description };
 
     api.createfolder(newFolder);
 
@@ -175,17 +176,17 @@ class App extends Component {
 
   deleteFolder = (folderID) => {
     console.log(`Folder ID of ${folderID} to be deleted`);
-    const folderObj = {folder_id: folderID};
-    api.deleteFolder(folderID,folderObj);
+    const folderObj = { folder_id: folderID };
+    api.deleteFolder(folderID, folderObj);
   };
 
   //Link Functions
   //----------
   addLink = (folderID) => {
-    const search = this.state.searchTerm;
+    const search = this.state.newname;
     const URL = this.state.newURL;
     const description = this.state.newDescription;
-    const newLink = {url: URL, description: description, searchTerm: search, folder_id: folderID};
+    const newLink = { url: URL, description: description, searchTerm: search, folder_id: folderID };
     console.log(newLink);
 
     api.createLink(newLink);
@@ -194,15 +195,14 @@ class App extends Component {
       ...this.state,
       newUrl: "",
       newDescription: "",
-      searchTerm: "",
+      newname: "",
     });
   };
 
   deleteLink = (folderID, linkUrl) => {
     //axios delete request to remove link from folder
     //must return new object for folder
-    const linkObj = {folder_id:folderID, url:linkUrl};
-    console.log(`Link of  Link URL: ${linkUrl} to be deleted from Folder ID of ${folderID}`)
+    const linkObj = { folder_id: folderID, url: linkUrl };
     api.deleteLink(linkObj);
 
   };
@@ -226,7 +226,6 @@ class App extends Component {
               <Folder
                 key={folder._id}
                 _id={folder._id}
-                folderURL={`linksaver/folder/${folder._id}`}
                 name={folder.name}
                 links={folder.links}
                 description={folder.description}

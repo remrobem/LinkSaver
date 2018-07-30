@@ -37,10 +37,10 @@ export default {
     //Delete
     //----------
     deleteUser: function (userID) {
-        return axios.delete(`${baseURL}${userID}`);
+        return axios.delete(`${baseURL}/deleteUser/${userID}`);
     },
-    deleteUserFolder: function (userID) {
-        return axios.delete(`${baseURL}deleteUserFolder/${userID}`);
+    deleteUserFolder: function (folderObj) {
+        return axios.delete(`${baseURL}deleteUserFolder/,`, folderObj);
     },
     deleteLink: function (linkURL) {
         return axios.delete(`${baseURL}/deletelink/`, { linkURL });
