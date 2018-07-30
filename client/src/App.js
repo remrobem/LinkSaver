@@ -4,16 +4,82 @@
 
 import React, { Component } from "react";
 import "./App.css";
-import api from './util/api'
-import Folder from './components/folder/folder';
-import InnactiveFolder from './components/innactiveFolder/innactiveFolder';
-import Navbar from './components/navbar/navbar';
-import User from './components/user/user';
-import Login from './components/login/login';
+import api from "./util/api";
+import Folder from "./components/folder/folder";
+import InnactiveFolder from "./components/innactiveFolder/innactiveFolder";
+import Navbar from "./components/navbar/navbar";
+import User from "./components/user/user";
+import Login from "./components/login/login";
 
+//****************************
 
+import injectTapEventPlugin from "react-tap-event-plugin";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+// import routes from './routes.js';
 
-function dynamicSort (a , b) {
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from "react-router-dom";
+
+import Base from "./components/Base.jsx";
+import HomePage from "./components/HomePage.jsx";
+import LoginPage from "./containers/LoginPage.jsx";
+import LogoutFunction from "./containers/LogoutFunction.jsx";
+import SignUpPage from "./containers/SignUpPage.jsx";
+import DashboardPage from "./containers/DashboardPage.jsx";
+import Auth from "./modules/Auth";
+
+// remove tap delay, essential for MaterialUI to work properly
+injectTapEventPlugin();
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      Auth.isUserAuthenticated() ? (
+        <Component {...props} {...rest} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/",
+            state: { from: props.location }
+          }}
+        />
+      )
+    }
+  />
+);
+
+const LoggedOutRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      Auth.isUserAuthenticated() ? (
+        <Redirect
+          to={{
+            pathname: "/",
+            state: { from: props.location }
+          }}
+        />
+      ) : (
+        <Component {...props} {...rest} />
+      )
+    }
+  />
+);
+
+const PropsRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => <Component {...props} {...rest} />} />
+);
+
+//******************************/
+
+function dynamicSort(a, b) {
   const nameA = a.name.toUpperCase();
   const nameB = b.name.toUpperCase();
   console.log(nameA);
@@ -37,13 +103,14 @@ class App extends Component {
     userID: "",
     //userFolderList: [{ name: "1", _id: "1", description: "Test data in multiples of 1", links: [{ url: "1", name: "1" }, { url: "2", name: "2" }, { url: "3", name: "3" }] }, { name: "2", _id: "2", description: "Test data in multiples of 2", links: [{ url: "2", name: "2" }, { url: "4", name: "4" }, { url: "6", name: "6" }] }, { name: "3", _id: "3", description: "Test data in multiples of 3", links: [{ url: "3", name: "3" }, { url: "6", name: "6" }, { url: "9", name: "9" }] }],
     //innactiveFolders: [{ name: "1", _id: "1", description: "Test data in multiples of 1", links: [{ url: "1", name: "1" }, { url: "2", name: "2" }, { url: "3", name: "3" }] }, { name: "2", _id: "2", description: "Test data in multiples of 2", links: [{ url: "2", name: "2" }, { url: "4", name: "4" }, { url: "6", name: "6" }] }, { name: "3", _id: "3", description: "Test data in multiples of 3", links: [{ url: "3", name: "3" }, { url: "6", name: "6" }, { url: "9", name: "9" }] }],
-    userFolderList:[],
+    userFolderList: [],
     innactiveFolders: [],
     activeFolders: [],
     newFolder: "default",
     newDescription: "default",
     newURL: "default",
-    searchTerm: ""
+    searchTerm: "",
+    authenticated: false
   };
 
   //----------
@@ -60,7 +127,7 @@ class App extends Component {
     });
   };
 
-  copy = (coppiedText) => {
+  copy = coppiedText => {
     coppiedText.select();
     document.execCommand("copy");
   };
@@ -68,7 +135,6 @@ class App extends Component {
   //GUI Functions
   //----------
   setActiveFolder = (folderID, inputCase) => {
-
     let newActiveFolders;
     let newInnactiveFolders;
     const currentActive = this.state.activeFolders;
@@ -77,12 +143,18 @@ class App extends Component {
     switch (inputCase) {
       case "active":
         newActiveFolders = currentActive.filter(item => item._id !== folderID);
-        newInnactiveFolders = currentInnactive.concat(currentActive.filter(item => item._id === folderID))
+        newInnactiveFolders = currentInnactive.concat(
+          currentActive.filter(item => item._id === folderID)
+        );
         break;
 
       case "innactive":
-        newInnactiveFolders = currentInnactive.filter(item => item._id !== folderID);
-        newActiveFolders = currentActive.concat(currentInnactive.filter(item => item._id === folderID))
+        newInnactiveFolders = currentInnactive.filter(
+          item => item._id !== folderID
+        );
+        newActiveFolders = currentActive.concat(
+          currentInnactive.filter(item => item._id === folderID)
+        );
         break;
 
       default:
@@ -110,31 +182,29 @@ class App extends Component {
 
     //REQUIRE AUTENTICATION LOGIC HERE
 
-    userAuthName = "User One"
-    userAuthID = "5b5c9d75e862220468afc741"
+    userAuthName = "User One";
+    userAuthID = "5b5c9d75e862220468afc741";
 
     api.getFolderbyUser(userAuthID).then(response => {
       console.log(response.data);
-      userFolders = response.data.folders
+      userFolders = response.data.folders;
       console.log(userFolders);
       this.setState({
         ...this.state,
         user: userAuthName,
         userID: userAuthID,
         userFolderList: userFolders,
-        innactiveFolders: userFolders,
+        innactiveFolders: userFolders
       });
       //console.log(this.state);
-
-    })
-
+    });
 
     this.setState({
       ...this.state,
       user: userAuthName,
       userID: userAuthID,
       userFolderList: userFolders,
-      innactiveFolders: userFolders,
+      innactiveFolders: userFolders
     });
   };
 
@@ -146,22 +216,16 @@ class App extends Component {
     });
   };
 
-  createUser = event => {
+  createUser = event => {};
 
-
-  };
-
-  deleteUser = event => {
-
-
-  };
+  deleteUser = event => {};
 
   //Folder Functions
   //----------
   addFolder = () => {
     const Name = this.state.newFolder;
     const Description = this.state.newDescription;
-    const newFolder = { name: Name, description: Description};
+    const newFolder = { name: Name, description: Description };
     console.log(newFolder);
 
     api.createfolder(newFolder);
@@ -169,23 +233,28 @@ class App extends Component {
     this.setState({
       ...this.state,
       newFolder: "",
-      newDescription: "",
+      newDescription: ""
     });
   };
 
-  deleteFolder = (folderID) => {
+  deleteFolder = folderID => {
     console.log(`Folder ID of ${folderID} to be deleted`);
-    const folderObj = {folder_id: folderID};
-    api.deleteFolder(folderID,folderObj);
+    const folderObj = { folder_id: folderID };
+    api.deleteFolder(folderID, folderObj);
   };
 
   //Link Functions
   //----------
-  addLink = (folderID) => {
+  addLink = folderID => {
     const search = this.state.searchTerm;
     const URL = this.state.newURL;
     const description = this.state.newDescription;
-    const newLink = {url: URL, description: description, searchTerm: search, folder_id: folderID};
+    const newLink = {
+      url: URL,
+      description: description,
+      searchTerm: search,
+      folder_id: folderID
+    };
     console.log(newLink);
 
     api.createLink(newLink);
@@ -194,19 +263,28 @@ class App extends Component {
       ...this.state,
       newUrl: "",
       newDescription: "",
-      searchTerm: "",
+      searchTerm: ""
     });
   };
 
   deleteLink = (folderID, linkUrl) => {
     //axios delete request to remove link from folder
     //must return new object for folder
-    const linkObj = {folder_id:folderID, url:linkUrl};
-    console.log(`Link of  Link URL: ${linkUrl} to be deleted from Folder ID of ${folderID}`)
+    const linkObj = { folder_id: folderID, url: linkUrl };
+    console.log(
+      `Link of  Link URL: ${linkUrl} to be deleted from Folder ID of ${folderID}`
+    );
     api.deleteLink(linkObj);
-
   };
+  componentDidMount() {
+    // check if user is logged in on refresh
+    this.toggleAuthenticateStatus();
+  }
 
+  toggleAuthenticateStatus() {
+    // check authenticated status and toggle state based on that
+    this.setState({ authenticated: Auth.isUserAuthenticated() });
+  }
   //----------
   //Render Page
   //----------
@@ -214,9 +292,7 @@ class App extends Component {
     if (this.state.user)
       return (
         <div className="bg-dark">
-          <Navbar
-            logout={this.logout}
-          />
+          <Navbar logout={this.logout} />
           <User
             userID={this.state.userID}
             addFolder={this.addFolder}
@@ -251,15 +327,52 @@ class App extends Component {
           </User>
         </div>
       );
-
     else {
       return (
-        <div>
-          <Login
-            handleInputChange={this.handleInputChange}
-            setUser={this.setUser}
-          />
-        </div>
+        // <div>
+        //   <Login
+        //     handleInputChange={this.handleInputChange}
+        //     setUser={this.setUser}
+        //   />
+        // </div>
+
+        <MuiThemeProvider muiTheme={getMuiTheme()}>
+          <Router>
+            <div>
+              <div className="top-bar">
+                <div className="top-bar-left">
+                  <Link to="/">React App</Link>
+                </div>
+                {this.state.authenticated ? (
+                  <div className="top-bar-right">
+                    <Link to="/dashboard">Dashboard</Link>
+                    <Link to="/logout">Log out</Link>
+                  </div>
+                ) : (
+                  <div className="top-bar-right">
+                    <Link to="/login">Log in</Link>
+                    <Link to="/signup">Sign up</Link>
+                  </div>
+                )}
+              </div>
+
+              <PropsRoute
+                exact
+                path="/"
+                component={HomePage}
+                toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}
+              />
+              <PrivateRoute path="/dashboard" component={DashboardPage} />
+              <LoggedOutRoute
+                path="/login"
+                component={LoginPage}
+                toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}
+              />
+              <LoggedOutRoute path="/signup" component={SignUpPage} />
+              <Route path="/logout" component={LogoutFunction} />
+            </div>
+          </Router>
+        </MuiThemeProvider>
       );
     }
   }
