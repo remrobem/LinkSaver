@@ -20,7 +20,8 @@ module.exports = {
   createFolder: function(req, res) {
     let query = { name: req.body.name, description: req.body.description };
     db.Folder.create(query)
-      .then(dbFolder => res.json(dbFolder))
+      .then(dbFolder => {res.json(dbFolder) 
+      console.log(dbFolder)})
       // .then(res => newFolder_id = res._id)
       .catch(err => res.status(400).json(err));
   },
@@ -55,7 +56,7 @@ module.exports = {
     db.Folder.findOneAndUpdate(
       { _id: req.body.folder_id },
       { $push: { links: link } },
-      { new: true }
+      { upsert: true }
     )
       .then(dbFolder => res.json(dbFolder))
       .catch(err => res.status(400).json(err));

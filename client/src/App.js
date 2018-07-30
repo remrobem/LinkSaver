@@ -174,11 +174,27 @@ class App extends Component {
   addFolder = () => {
     const Name = this.state.newFolder;
     const Description = this.state.newDescription;
+    const userID = this.state.userID;
     const newFolder = { name: Name, description: Description };
-    console.log(newFolder);
-    api.createfolder(newFolder).then( () => {
-      const userID = this.state.userID;
-      this.reloadfolders(userID);
+    api.createfolder(newFolder).then((response) => {
+      const newFolderID = response.data._id
+      const newUserFolder = {folder_id:newFolderID, user_id: userID}
+        api.addFolderToUser(newUserFolder).then(()=>{
+          const userID = this.state.userID;
+          this.setState({
+            ...this.state,
+            userFolderList: [],
+            innactiveFolders: [],
+          });
+          api.getFolderbyUser(userID).then(response => {
+            const userFolders = response.data.folders
+            this.setState({
+              ...this.state,
+              userFolderList: userFolders,
+              innactiveFolders: userFolders,
+            });
+          });
+        })
     });
     this.setState({
       ...this.state,
@@ -205,7 +221,14 @@ class App extends Component {
     const newLink = { url: URL, description: description, searchTerm: search, folder_id: folderID };
     api.createLink(newLink).then( () => {
       const userID = this.state.userID;
-      this.reloadfolders(userID);
+      api.getFolderbyUser(userID).then(response => {
+        const userFolders = response.data.folders
+        this.setState({
+          ...this.state,
+          userFolderList: userFolders,
+          innactiveFolders: userFolders,
+        });
+      });
     });
     this.setState({
       ...this.state,
