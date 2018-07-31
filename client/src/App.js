@@ -8,6 +8,7 @@ import InnactiveFolder from "./components/innactiveFolder/innactiveFolder";
 import Navbar from "./components/navbar/navbar";
 import User from "./components/user/user";
 
+import axios from "axios"
 //****************************
 
 import injectTapEventPlugin from "react-tap-event-plugin";
@@ -27,6 +28,10 @@ import LogoutFunction from "./containers/LogoutFunction.jsx";
 import SignUpPage from "./containers/SignUpPage.jsx";
 import DashboardPage from "./containers/DashboardPage.jsx";
 import Auth from "./modules/Auth";
+
+axios.defaults.headers.common['Authorization'] = 
+'Bearer ' + localStorage.getItem('token');
+
 
 // remove tap delay, essential for MaterialUI to work properly
 injectTapEventPlugin();
@@ -182,8 +187,8 @@ class App extends Component {
 
     //REQUIRE AUTENTICATION LOGIC HERE
 
-    userAuthName = "User One";
-    userAuthID = "5b5c9d75e862220468afc741";
+    // userAuthName = "User One";
+    // userAuthID = "5b5c9d75e862220468afc741";
 
     api.getFolderbyUser(userAuthID).then(response => {
       userFolders = response.data.folders
@@ -247,12 +252,13 @@ class App extends Component {
     const Description = this.state.newDescription;
 
     const userID = this.state.userID;
+    console.log(userID);
     const newFolder = { name: Name, description: Description };
     api.createfolder(newFolder).then((response) => {
       const newFolderID = response.data._id
       const newUserFolder = {folder_id:newFolderID, user_id: userID}
         api.addFolderToUser(newUserFolder).then(()=>{
-          const userID = this.state.userID;
+          // const userID = this.state.userID;
           this.setState({
             ...this.state,
             userFolderList: [],
@@ -345,6 +351,7 @@ class App extends Component {
     if (this.state.authenticated)
 
       return (
+       
         <div className="bg-dark">
           <Navbar logout={this.logout} />
           <User
