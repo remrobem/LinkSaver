@@ -7,24 +7,20 @@ import Folder from "./components/folder/folder";
 import InnactiveFolder from "./components/innactiveFolder/innactiveFolder";
 import Navbar from "./components/navbar/navbar";
 import User from "./components/user/user";
-import Login from "./components/login/login";
 
 //****************************
 
 import injectTapEventPlugin from "react-tap-event-plugin";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-// import routes from './routes.js';
 
 import {
   BrowserRouter as Router,
   Route,
   Link,
-  Redirect,
-  withRouter
+  Redirect
 } from "react-router-dom";
 
-import Base from "./components/Base.jsx";
 import HomePage from "./components/HomePage.jsx";
 import LoginPage from "./containers/LoginPage.jsx";
 import LogoutFunction from "./containers/LogoutFunction.jsx";
@@ -75,31 +71,6 @@ const PropsRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => <Component {...props} {...rest} />} />
 );
 
-//******************************/
-
-function dynamicSort(a, b) {
-  const nameA = a.name.toUpperCase();
-  const nameB = b.name.toUpperCase();
-  console.log(nameA);
-  console.log(nameB);
-  if (nameA < nameB) {
-    return -1;
-  }
-  if (nameA > nameB) {
-    return 1;
-  }
-  return 0;
-}
-=======
-import api from './util/api'
-import Folder from './components/folder/folder';
-import InnactiveFolder from './components/innactiveFolder/innactiveFolder';
-import Navbar from './components/navbar/navbar';
-import User from './components/user/user';
-import Login from './components/login/login';
-import NewUser from './components/newuser/newuser';
-//import Library from './util/library'
-
 
 //----------
 //Define State
@@ -114,7 +85,7 @@ class App extends Component {
     newDescription: "default",
     newURL: "default",
     searchTerm: "",
-    authenticated: false
+    authenticated: false,
     newLoginName: "",
     newLoginEmail: "",
     newPassword: "",
@@ -224,7 +195,7 @@ class App extends Component {
         userFolderList: userFolders,
         innactiveFolders: userFolders
       });
-
+    });
   };
 
   logout = event => {
