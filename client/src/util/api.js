@@ -2,7 +2,12 @@ import axios from "axios";
 
 const baseURL = '/api/folders/'
 
+axios.defaults.headers.common['Authorization'] = 
+'Bearer ' + localStorage.getItem('token');
+
+
 export default {
+
 
     //----------
     //Get
@@ -11,6 +16,8 @@ export default {
         return axios.get(`${baseURL}${id}`);
     },
     getFolderbyUser: function (userID) {
+        axios.defaults.headers.common['Authorization'] = 
+'Bearer ' + localStorage.getItem('token');
         return axios.get(`${baseURL}returnUserFolders/${userID}`);
     },
     //----------
@@ -20,9 +27,13 @@ export default {
         return axios.post(`${baseURL}addUser`, userObj);
     },
     createfolder: function (folderObj) {
+        axios.defaults.headers.common['Authorization'] = 
+'Bearer ' + localStorage.getItem('token');
         return axios.post(`${baseURL}createFolder/`, folderObj );
     },
     addFolderToUser: function (userFolderObj) {
+        axios.defaults.headers.common['Authorization'] = 
+'Bearer ' + localStorage.getItem('token');
         return axios.post(`${baseURL}addFolderToUser/`, userFolderObj);
     },
     createLink: function (linkObj) {

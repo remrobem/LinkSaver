@@ -56,12 +56,20 @@ class LoginPage extends React.Component {
     xhr.addEventListener('load', () => {
       if (xhr.status === 200) {
         // success
-
+       
+        const userID = xhr.response.user.userID;
+     
         // change the component-container state
         this.setState({
-          errors: {}
+          errors: {},
+          userID: userID
         });
+        
+        console.log(this.state.userID)
 
+     
+        localStorage.setItem(userID);
+        
         // save the token
         Auth.authenticateUser(xhr.response.token);
 
