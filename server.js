@@ -10,8 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // tell the app to look for static files in these directories
-app.use(express.static('./server/static/'));
-app.use(express.static('./client/dist/'));
+if(process.env.NODE_ENV==="production"){
+  app.use(express.static('./client/build/'));
+}
+
 // pass the passport middleware
 app.use(passport.initialize());
 // load passport strategies
@@ -35,13 +37,13 @@ app.use('/api', apiRoutes);
 
 
 // Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static("client/build"));
+// }
 
-// app.get("*", function(req, res) {
-//   res.sendFile(path.join(__dirname, "./client/public/index.html"));
-// })
+app.get("/*", function(req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+})
 
 
 
