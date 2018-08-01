@@ -165,6 +165,14 @@ class App extends Component {
     });
   };
 
+  collabFolder = () => {
+    const sharedFolders = this.state.userFolderList.filter( item => (item.users[1]));
+    this.setState({
+      ...this.state,
+      userFolderList: sharedFolders,
+      InnactiveFolders: sharedFolders,
+    });
+  };
   //CRUD Functions
   //----------
 
@@ -227,6 +235,12 @@ class App extends Component {
     const folderObj = { folder_id: folderID };
     api.deleteFolder(folderID, folderObj).then(() => {
       const userID = this.state.userID;
+      this.setState({
+        ...this.state,
+        userFolderList: [],
+        innactiveFolders: [],
+        activeFolders: [],
+      });
       api.getFolderbyUser(userID).then(response => {
         const userFolders = response.data.folders
         this.setState({
@@ -275,8 +289,15 @@ class App extends Component {
 
   deleteLink = (folderID, linkUrl) => {
     const linkObj = { folder_id: folderID, url: linkUrl };
+    console.log(linkObj);
     api.deleteLink(linkObj).then(() => {
       const userID = this.state.userID;
+      this.setState({
+        ...this.state,
+        userFolderList: [],
+        innactiveFolders: [],
+        activeFolders: [],
+      });
       api.getFolderbyUser(userID).then(response => {
         const userFolders = response.data.folders
         this.setState({
@@ -340,7 +361,10 @@ class App extends Component {
       return (
 
         <div className="bg-dark">
-          <Navbar logout={this.logout} />
+          <Navbar 
+          logout={this.logout} 
+          collab = {this.collabFolder}
+          />
           <User
             userID={this.state.userID}
             addFolder={this.addFolder}
