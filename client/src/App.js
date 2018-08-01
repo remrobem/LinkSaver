@@ -203,7 +203,8 @@ class App extends Component {
     });
   };
 
-  logout = event => {
+  logout = () => {
+    localStorage.removeItem("token");
     this.setState({
       ...this.state,
       user: "",
