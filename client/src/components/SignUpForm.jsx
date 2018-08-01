@@ -12,15 +12,15 @@ const SignUpForm = ({
   errors,
   user,
 }) => (
-  <Card className="container">
+  <Card className="container bg-secondary text-light">
     <form action="/" onSubmit={onSubmit}>
       <h2 className="card-heading">Sign Up</h2>
 
       {errors.summary && <p className="error-message">{errors.summary}</p>}
 
-      <div className="field-line">
-        <TextField
-          floatingLabelText="Name"
+      <div className="field-line mt-4">
+      <h5>Name:</h5>
+        <input
           name="name"
           errorText={errors.name}
           onChange={onChange}
@@ -28,9 +28,9 @@ const SignUpForm = ({
         />
       </div>
 
-      <div className="field-line">
-        <TextField
-          floatingLabelText="Email"
+      <div className="field-line mt-2">
+      <h5>Email:</h5>
+        <input
           name="email"
           errorText={errors.email}
           onChange={onChange}
@@ -38,9 +38,9 @@ const SignUpForm = ({
         />
       </div>
 
-      <div className="field-line">
-        <TextField
-          floatingLabelText="Password"
+      <div className="field-line mt-2 mb-4">
+      <h5>Password:</h5>
+        <input
           type="password"
           name="password"
           onChange={onChange}
@@ -50,10 +50,10 @@ const SignUpForm = ({
       </div>
 
       <div className="button-line">
-        <RaisedButton type="submit" label="Create New Account" primary />
+        <button className="btn btn-success" type="submit" label="Create New Account" primary>Submit</button>
       </div>
 
-      <CardText>Already have an account? <Link to={'/login'}>Log in</Link></CardText>
+      <CardText>Already have an account? <Link className="navStyle" to={'/login'}>Log in</Link></CardText>
     </form>
   </Card>
 );
