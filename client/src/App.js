@@ -340,6 +340,7 @@ class App extends Component {
   toggleAuthenticateStatus() {
     // check authenticated status and toggle state based on that
     this.setState({ authenticated: Auth.isUserAuthenticated() });
+    this.setState({ userID: localStorage.getItem("userID") });
   }
 
   //----------
