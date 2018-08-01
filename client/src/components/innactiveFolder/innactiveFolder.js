@@ -9,7 +9,7 @@ const InnactiveFolder = props => (
                 <h4 className="col-10 mt-4">{props.name}</h4>
             </div>
             <div className="col-4">
-                <img onClick={() => props.copy(props.folderURL)} className="copy-icon m-1" id="copyButton" alt="Copy Link To Clipboard" src="./assets/images/icons/link.png"></img>
+                <img onClick={() => props.copy(props._id)} className="copy-icon m-1" id="copyButton" alt="Copy Link To Clipboard" src="./assets/images/icons/link.png"></img>
             </div>
         </div>
         <div className = "ml-4">

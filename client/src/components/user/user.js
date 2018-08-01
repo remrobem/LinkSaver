@@ -13,7 +13,7 @@ const UserComp = props => (
     {/* <div className="spacer col-xs-12 bg-white mx-1 my-2" /> */}
     <div className="col-xs-4 ml-3 mt-4">
       <div className="container-fluid">
-        <div className="col-xs-12 mt-3 bg-secondary pt-2 text-white rounded border border-2 border-white p-3">
+        <div className="col-xs-12 mt-3 mb-4 bg-secondary pt-2 text-white rounded border border-2 border-white p-3">
           <h5>Add a new folder</h5>
           <div className="form-group ">
             <div className="col-xs-8" />
@@ -35,6 +35,21 @@ const UserComp = props => (
                 className="form-control"
                 name="newDescription"
                 value={props.newDescription}
+                onChange={props.handleInputChange}
+              />
+            </div>
+          </div>
+
+          <div className="spacer row col-12 bg-light ml-2 my-2"></div>
+          <h5 className= "mt-4 mb-2">Or add a shared folder</h5>
+          <div className="form-group ">
+            <div className="col-xs-8">
+              <label style={{ color: 'white' }} >Shared ID:</label>
+              <input
+                type="text"
+                className="form-control"
+                name="newShared"
+                value={props.newShared}
                 onChange={props.handleInputChange}
               />
             </div>

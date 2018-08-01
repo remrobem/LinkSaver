@@ -23,6 +23,7 @@ import LogoutFunction from "./containers/LogoutFunction.jsx";
 import SignUpPage from "./containers/SignUpPage.jsx";
 import DashboardPage from "./containers/DashboardPage.jsx";
 import Auth from "./modules/Auth";
+import copy from 'copy-to-clipboard';
 
 axios.defaults.headers.common['Authorization'] =
   'Bearer ' + localStorage.getItem('token');
@@ -88,7 +89,7 @@ class App extends Component {
     newLoginName: "",
     newLoginEmail: "",
     newPassword: "",
-
+    newShared: "",
   };
 
 
@@ -107,9 +108,9 @@ class App extends Component {
     });
   };
 
-  copy = (coppiedText) => {
-    coppiedText.select();
-    document.execCommand("copy");
+  copyText = (coppiedText) => {
+      copy(coppiedText);
+      console.log(coppiedText);
   };
 
   //GUI Functions
@@ -119,7 +120,6 @@ class App extends Component {
     let newInnactiveFolders;
     const currentActive = this.state.activeFolders;
     const currentInnactive = this.state.innactiveFolders;
-
     switch (inputCase) {
       case "active":
         newActiveFolders = currentActive.filter(item => item._id !== folderID);
@@ -127,7 +127,6 @@ class App extends Component {
           currentActive.filter(item => item._id === folderID)
         );
         break;
-
       case "innactive":
         newInnactiveFolders = currentInnactive.filter(
           item => item._id !== folderID
@@ -136,12 +135,10 @@ class App extends Component {
           currentInnactive.filter(item => item._id === folderID)
         );
         break;
-
       default:
     }
     let active = newActiveFolders.sort(this.dynamicSort);
     let innactive = newInnactiveFolders.sort(this.dynamicSort);
-
     this.setState({
       ...this.state,
       activeFolders: active,
@@ -177,9 +174,8 @@ class App extends Component {
     const Name = this.state.newFolder;
     const Description = this.state.newDescription;
     const userID = this.state.userID;
-    const newFolder = { name: Name, description: Description };
-    api.createfolder(newFolder).then((response) => {
-      const newFolderID = response.data._id
+    if (this.state.newShared) {
+      const newFolderID = this.state.newShared
       const newUserFolder = { folder_id: newFolderID, user_id: userID }
       api.addFolderToUser(newUserFolder).then(() => {
         this.setState({
@@ -196,12 +192,34 @@ class App extends Component {
           });
         });
       });
-    });
-    this.setState({
-      ...this.state,
-      newFolder: "",
-      newDescription: ""
-    });
+    }
+    else {
+      const newFolder = { name: Name, description: Description };
+      api.createfolder(newFolder).then((response) => {
+        const newFolderID = response.data._id
+        const newUserFolder = { folder_id: newFolderID, user_id: userID }
+        api.addFolderToUser(newUserFolder).then(() => {
+          this.setState({
+            ...this.state,
+            userFolderList: [],
+            innactiveFolders: [],
+          });
+          api.getFolderbyUser(userID).then(response => {
+            const userFolders = response.data.folders
+            this.setState({
+              ...this.state,
+              userFolderList: userFolders,
+              innactiveFolders: userFolders,
+            });
+          });
+        });
+      });
+      this.setState({
+        ...this.state,
+        newFolder: "",
+        newDescription: ""
+      });
+    };
   };
 
   deleteFolder = folderID => {
@@ -327,6 +345,7 @@ class App extends Component {
             userID={this.state.userID}
             addFolder={this.addFolder}
             handleInputChange={this.handleInputChange}
+            newShared={this.state.newShared}
           >
             {this.state.activeFolders.map(folder => (
               <Folder
@@ -339,7 +358,7 @@ class App extends Component {
                 setActiveFolder={this.setActiveFolder}
                 deleteFolder={this.deleteFolder}
                 deleteLink={this.deleteLink}
-                copy={this.copy}
+                copy={this.copyText}
                 addLink={this.addLink}
               />
             ))}
@@ -351,6 +370,7 @@ class App extends Component {
                 description={folder.description}
                 setActiveFolder={this.setActiveFolder}
                 deleteFolder={this.deleteFolder}
+                copy={this.copyText}
               />
             ))}
           </User>
