@@ -386,48 +386,50 @@ class App extends Component {
 
     else {
       return (
-        // <div>
-        //   <Login
-        //     handleInputChange={this.handleInputChange}
-        //     setUser={this.setUser}
-        //   />
-        // </div>
-
         <MuiThemeProvider muiTheme={getMuiTheme()}>
           <Router>
-            <div>
-              <div className="top-bar">
-                {/* <div className="top-bar-left">
-                  <Link to="/">LinkSaver</Link>
-                </div> */}
-                {this.state.authenticated ? (
-                  <div className="top-bar-right App-header">
-                    <Link to="/dashboard">Dashboard</Link>
-                    <Link to="/logout">Log out</Link>
+            <div className="col-12">
+              <div className="row">
+                <div className="col-1"></div>
+                <div className="col-md-10">
+                  <PropsRoute
+                    exact
+                    path="/"
+                    component={HomePage}
+                    toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}
+                  />
+                  <PrivateRoute path="/dashboard" component={DashboardPage} />
+                  <LoggedOutRoute
+                    path="/login"
+                    component={LoginPage}
+                    toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}
+                  />
+                  <div className="">
+                    {this.state.authenticated ? (
+                        <div className="bg-dark my-2">
+                        {/* <button class="btn btn-sm align-middle btn-primary" type="button">Always visible here!</button> */}
+                        <div className="col-md-4">
+                          <Link to="/dashboard"> <button className="btn btn-sm align-middle px-5 mr-2 btn-success" type="button">Log In</button></Link>
+                          <Link to="/logout"> <button className="btn btn-sm align-middle px-5 ml-2 btn-success" type="button">Sign Up</button></Link>
+                        </div>
+                      </div>
+                    ) : (
+                        <div className="row my-3">
+                          {/* <button class="btn btn-sm align-middle btn-primary" type="button">Always visible here!</button> */}
+                          <div className="col-md-3"></div>
+                          <div className="col-md-6 m-*-auto text-center">
+                            <Link to="/login"> <button className="btn btn-sm align-middle px-5 mr-2 btn-success" type="button">Log In</button></Link>
+                            <Link to="/signup"> <button className="btn btn-sm align-middle px-5 ml-2 btn-success" type="button">Sign Up</button></Link>
+                          </div>
+                          <div className="col-md-3"></div>
+                        </div>
+                      )}
                   </div>
-                ) : (
-                    <div className="top-bar-right App-header">
-                      {/* <button class="btn btn-sm align-middle btn-primary" type="button">Always visible here!</button> */}
-                      <Link to="/login"> <button className="btn btn-sm align-middle btn-primary" type="button">Log In</button></Link>
-                      <Link to="/signup"> <button className="btn btn-sm align-middle btn-primary" type="button">Sign Up</button></Link>
-                    </div>
-                  )}
+                  <LoggedOutRoute path="/signup" component={SignUpPage} />
+                  <Route path="/logout" component={LogoutFunction} />
+                </div>
+                <div className="col-1"></div>
               </div>
-
-              <PropsRoute
-                exact
-                path="/"
-                component={HomePage}
-                toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}
-              />
-              <PrivateRoute path="/dashboard" component={DashboardPage} />
-              <LoggedOutRoute
-                path="/login"
-                component={LoginPage}
-                toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}
-              />
-              <LoggedOutRoute path="/signup" component={SignUpPage} />
-              <Route path="/logout" component={LogoutFunction} />
             </div>
           </Router>
         </MuiThemeProvider>
