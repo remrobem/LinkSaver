@@ -192,7 +192,6 @@ class App extends Component {
 
     api.getFolderbyUser(userAuthID).then(response => {
       userFolders = response.data.folders
-
       this.setState({
         ...this.state,
         user: userAuthName,
@@ -271,7 +270,6 @@ class App extends Component {
       const userID = this.state.userID;
       this.reloadfolders(userID);
     });
-
   };
 
   //Link Functions
@@ -410,8 +408,8 @@ class App extends Component {
                 ) : (
                     <div className="top-bar-right App-header">
                       {/* <button class="btn btn-sm align-middle btn-primary" type="button">Always visible here!</button> */}
-                      <Link to="/login"> <button class="btn btn-sm align-middle btn-primary" type="button">Log In</button></Link>
-                      <Link to="/signup"> <button class="btn btn-sm align-middle btn-primary" type="button">Sign Up</button></Link>
+                      <Link to="/login"> <button className="btn btn-sm align-middle btn-primary" type="button">Log In</button></Link>
+                      <Link to="/signup"> <button className="btn btn-sm align-middle btn-primary" type="button">Sign Up</button></Link>
                     </div>
                   )}
               </div>
