@@ -233,7 +233,7 @@ class App extends Component {
   deleteFolder = folderID => {
     console.log(`Folder ID of ${folderID} to be deleted`);
     const folderObj = { folder_id: folderID };
-    api.deleteFolder(folderID, folderObj).then(() => {
+    api.deleteFolder(folderObj).then(() => {
       const userID = this.state.userID;
       this.setState({
         ...this.state,
@@ -251,6 +251,30 @@ class App extends Component {
       });
     });
   };
+
+  deleteUserFolder = folderID => {
+    console.log(`Folder ID of ${folderID} to be deleted`);
+    const reqObj = { folder_id: folderID,  user_id: this.state.userID };
+    const userObj = { user_id: this.state.userID};
+    api.deleteUserFolder(reqObj).then(() => {
+      const userID = this.state.userID;
+      this.setState({
+        ...this.state,
+        userFolderList: [],
+        innactiveFolders: [],
+        activeFolders: [],
+      });
+      api.getFolderbyUser(userID).then(response => {
+        const userFolders = response.data.folders
+        this.setState({
+          ...this.state,
+          userFolderList: userFolders,
+          innactiveFolders: userFolders,
+        });
+      });
+    });
+  };
+
 
   //Link Functions
   //----------
@@ -380,7 +404,7 @@ class App extends Component {
                 description={folder.description}
                 handleInputChange={this.handleInputChange}
                 setActiveFolder={this.setActiveFolder}
-                deleteFolder={this.deleteFolder}
+                deleteFolder={this.deleteUserFolder}
                 deleteLink={this.deleteLink}
                 copy={this.copyText}
                 addLink={this.addLink}
@@ -393,7 +417,7 @@ class App extends Component {
                 name={folder.name}
                 description={folder.description}
                 setActiveFolder={this.setActiveFolder}
-                deleteFolder={this.deleteFolder}
+                deleteFolder={this.deleteUserFolder}
                 copy={this.copyText}
               />
             ))}

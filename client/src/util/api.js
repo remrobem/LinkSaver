@@ -45,6 +45,12 @@ export default {
             'Bearer ' + localStorage.getItem('token');
         return axios.post(`${baseURL}deleteFolder/${folderID}`, folderObj);
     },
+
+    deleteUserFolder: function (reqObj) {
+        axios.defaults.headers.common['Authorization'] =
+            'Bearer ' + localStorage.getItem('token');
+        return axios.post(`${baseURL}deleteUserFolder/`, reqObj);
+    },
     //----------
     //Delete
     //----------

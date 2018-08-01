@@ -78,8 +78,9 @@ module.exports = {
       { $pullAll: { folders: [req.body.folder_id] } }
     )
       .then(dbFolder =>
-        db.Folder.update(
-          { users: [req.body.user_id] },
+        db.Folder.findOneAndUpdate(
+          // { users: [req.body.user_id] },
+          { _id: req.body.folder_id },
           {
             $pullAll: { users: [req.body.user_id] }
           }
