@@ -6,7 +6,7 @@
 //   <div>
 //     <div className="top-bar">
 //       <div className="top-bar-left">
-//         <IndexLink to="/">React App</IndexLink>
+//         <IndexLink to="/">LinkSaver</IndexLink>
 //       </div>
 //
 //       <div className="top-bar-right">

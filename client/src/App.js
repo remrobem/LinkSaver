@@ -403,18 +403,19 @@ class App extends Component {
           <Router>
             <div>
               <div className="top-bar">
-                <div className="top-bar-left">
-                  <Link to="/">React App</Link>
-                </div>
+                {/* <div className="top-bar-left">
+                  <Link to="/">LinkSaver</Link>
+                </div> */}
                 {this.state.authenticated ? (
-                  <div className="top-bar-right">
+                  <div className="top-bar-right App-header">
                     <Link to="/dashboard">Dashboard</Link>
                     <Link to="/logout">Log out</Link>
                   </div>
                 ) : (
-                  <div className="top-bar-right">
-                    <Link to="/login">Log in</Link>
-                    <Link to="/signup">Sign up</Link>
+                  <div className="top-bar-right App-header">
+                  {/* <button class="btn btn-sm align-middle btn-primary" type="button">Always visible here!</button> */}
+                    <Link to="/login"> <button class="btn btn-sm align-middle btn-primary" type="button">Log In</button></Link>
+                    <Link to="/signup"> <button class="btn btn-sm align-middle btn-primary" type="button">Sign Up</button></Link>
                   </div>
                 )}
               </div>
