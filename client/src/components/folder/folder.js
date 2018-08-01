@@ -19,8 +19,8 @@ const Folder = props => (
             <p>{props.description}</p>
         </div>
 
-        <div className="row  bg-dark">
-            <div className="col-xs-12">
+        <div className="row bg-dark rounded">
+            <div className="col-12">
                 {props.links.map(link => {
                     return (<Link
                         folderID={props._id}

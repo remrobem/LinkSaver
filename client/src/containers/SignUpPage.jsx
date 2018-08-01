@@ -45,8 +45,7 @@ class SignUpPage extends React.Component {
     // formData.append("password", password);
     let formData = `name=${name}&email=${email}&password=${password}`;
     console.log(`sign up formData: ${formData}`);
-
-    const url = "/auth/signup";/*
+/*
     fetch(url, {
       method: "POST",
       body: formData
