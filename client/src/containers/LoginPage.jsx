@@ -68,7 +68,7 @@ class LoginPage extends React.Component {
         console.log(this.state.userID)
 
      
-        localStorage.setItem(userID);
+        localStorage.setItem('userID',userID);
         
         // save the token
         Auth.authenticateUser(xhr.response.token);
