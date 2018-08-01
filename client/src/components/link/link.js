@@ -6,7 +6,7 @@ const LinkComp = props => (
 
         <div className="row">
             <span className="ml-2 col-2"></span>
-            <a className="link font-weight-bold mt-2 linka" href={props.url} rel="noopener noreferrer" target="_blank">{props.name}</a>
+            <a className="link font-weight-bold mt-2 linka" href={props.url} rel="noopener noreferrer" target="_blank">{props.url}</a>
         </div>
 
         <div className="spacer row col-12 bg-dark mx-2 my-2"></div>

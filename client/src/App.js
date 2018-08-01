@@ -29,8 +29,8 @@ import SignUpPage from "./containers/SignUpPage.jsx";
 import DashboardPage from "./containers/DashboardPage.jsx";
 import Auth from "./modules/Auth";
 
-axios.defaults.headers.common['Authorization'] = 
-'Bearer ' + localStorage.getItem('token');
+axios.defaults.headers.common['Authorization'] =
+  'Bearer ' + localStorage.getItem('token');
 
 
 // remove tap delay, essential for MaterialUI to work properly
@@ -43,13 +43,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       Auth.isUserAuthenticated() ? (
         <Component {...props} {...rest} />
       ) : (
-        <Redirect
-          to={{
-            pathname: "/",
-            state: { from: props.location }
-          }}
-        />
-      )
+          <Redirect
+            to={{
+              pathname: "/",
+              state: { from: props.location }
+            }}
+          />
+        )
     }
   />
 );
@@ -66,8 +66,8 @@ const LoggedOutRoute = ({ component: Component, ...rest }) => (
           }}
         />
       ) : (
-        <Component {...props} {...rest} />
-      )
+          <Component {...props} {...rest} />
+        )
     }
   />
 );
@@ -97,7 +97,7 @@ class App extends Component {
 
   };
 
-  
+
   //----------
   //Function Library
   //----------
@@ -219,22 +219,6 @@ class App extends Component {
     });
   };
 
-
- 
-  createUser = (newUsername, newUserEmail, newUserPassword) => {
-    const userObj = { name: newUsername, email: newUserEmail, password: newUserPassword };
-    api.createUser(userObj).then( (response) => {
-        this.setUser(response._id)
-    });
-  };
-
-  deleteUser = (userFolderID, userID) => {
-    const folderObj = { folder_id: userFolderID, user_id: userID };
-    api.deleteUserFolder(folderObj);
-    api.deleteUser(userID);
-    this.logout();
-  };
-
   reloadFolders = (userID) => {
     api.getFolderbyUser(userID).then(response => {
       const userFolders = response.data.folders
@@ -251,31 +235,27 @@ class App extends Component {
   addFolder = () => {
     const Name = this.state.newFolder;
     const Description = this.state.newDescription;
-
     const userID = this.state.userID;
-    console.log(userID);
     const newFolder = { name: Name, description: Description };
     api.createfolder(newFolder).then((response) => {
       const newFolderID = response.data._id
-      const newUserFolder = {folder_id:newFolderID, user_id: userID}
-        api.addFolderToUser(newUserFolder).then(()=>{
-          // const userID = this.state.userID;
+      const newUserFolder = { folder_id: newFolderID, user_id: userID }
+      api.addFolderToUser(newUserFolder).then(() => {
+        this.setState({
+          ...this.state,
+          userFolderList: [],
+          innactiveFolders: [],
+        });
+        api.getFolderbyUser(userID).then(response => {
+          const userFolders = response.data.folders
           this.setState({
             ...this.state,
-            userFolderList: [],
-            innactiveFolders: [],
+            userFolderList: userFolders,
+            innactiveFolders: userFolders,
           });
-          api.getFolderbyUser(userID).then(response => {
-            const userFolders = response.data.folders
-            this.setState({
-              ...this.state,
-              userFolderList: userFolders,
-              innactiveFolders: userFolders,
-            });
-          });
-        })
+        });
+      });
     });
-
     this.setState({
       ...this.state,
       newFolder: "",
@@ -287,7 +267,7 @@ class App extends Component {
     console.log(`Folder ID of ${folderID} to be deleted`);
     const folderObj = { folder_id: folderID };
 
-    api.deleteFolder(folderID, folderObj).then( () => {
+    api.deleteFolder(folderID, folderObj).then(() => {
       const userID = this.state.userID;
       this.reloadfolders(userID);
     });
@@ -302,8 +282,14 @@ class App extends Component {
     const URL = this.state.newURL;
     const description = this.state.newDescription;
     const newLink = { url: URL, description: description, searchTerm: search, folder_id: folderID };
-    api.createLink(newLink).then( () => {
+    api.createLink(newLink).then(() => {
       const userID = this.state.userID;
+      this.setState({
+        ...this.state,
+        userFolderList: [],
+        activeFolders: [],
+        innactiveFolders: [],
+      });
       api.getFolderbyUser(userID).then(response => {
         const userFolders = response.data.folders
         this.setState({
@@ -324,9 +310,8 @@ class App extends Component {
   };
 
   deleteLink = (folderID, linkUrl) => {
-
     const linkObj = { folder_id: folderID, url: linkUrl };
-    api.deleteLink(linkObj).then( () => {
+    api.deleteLink(linkObj).then(() => {
       const userID = this.state.userID;
       this.reloadfolders(userID);
     });
@@ -335,14 +320,25 @@ class App extends Component {
   componentDidMount() {
     // check if user is logged in on refresh
     this.toggleAuthenticateStatus();
-  }
+  };
 
 
   toggleAuthenticateStatus() {
     // check authenticated status and toggle state based on that
     this.setState({ authenticated: Auth.isUserAuthenticated() });
-    this.setState({ userID: localStorage.getItem("userID") });
-  }
+    this.setState({ userID: localStorage.getItem("userID") })
+    setTimeout(() => {
+      const userID = this.state.userID;
+      api.getFolderbyUser(userID).then(response => {
+        const userFolders = response.data.folders
+        this.setState({
+          ...this.state,
+          userFolderList: userFolders,
+          innactiveFolders: userFolders,
+        });
+      });
+    }, 250);
+  };
 
   //----------
   //Render Page
@@ -353,7 +349,7 @@ class App extends Component {
     if (this.state.authenticated)
 
       return (
-       
+
         <div className="bg-dark">
           <Navbar logout={this.logout} />
           <User
@@ -412,12 +408,12 @@ class App extends Component {
                     <Link to="/logout">Log out</Link>
                   </div>
                 ) : (
-                  <div className="top-bar-right App-header">
-                  {/* <button class="btn btn-sm align-middle btn-primary" type="button">Always visible here!</button> */}
-                    <Link to="/login"> <button class="btn btn-sm align-middle btn-primary" type="button">Log In</button></Link>
-                    <Link to="/signup"> <button class="btn btn-sm align-middle btn-primary" type="button">Sign Up</button></Link>
-                  </div>
-                )}
+                    <div className="top-bar-right App-header">
+                      {/* <button class="btn btn-sm align-middle btn-primary" type="button">Always visible here!</button> */}
+                      <Link to="/login"> <button class="btn btn-sm align-middle btn-primary" type="button">Log In</button></Link>
+                      <Link to="/signup"> <button class="btn btn-sm align-middle btn-primary" type="button">Sign Up</button></Link>
+                    </div>
+                  )}
               </div>
 
               <PropsRoute
