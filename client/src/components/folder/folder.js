@@ -4,7 +4,7 @@ import Link from '../link/link';
 
 const Folder = props => (
   
-    <div className="col-12 py-2 bg-secondary text-white border border-2 border-white mt-4 rounded">
+    <div className="col-12 py-2 m-2 bg-secondary text-white border border-2 border-white mt-4 rounded">
 
         {/* <div className="row"> */}
             <div className="col-8" onClick={() => props.setActiveFolder(props._id, "active")}>

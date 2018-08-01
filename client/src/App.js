@@ -7,21 +7,16 @@ import Folder from "./components/folder/folder";
 import InnactiveFolder from "./components/innactiveFolder/innactiveFolder";
 import Navbar from "./components/navbar/navbar";
 import User from "./components/user/user";
-
 import axios from "axios"
-//****************************
-
 import injectTapEventPlugin from "react-tap-event-plugin";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-
 import {
   BrowserRouter as Router,
   Route,
   Link,
   Redirect
 } from "react-router-dom";
-
 import HomePage from "./components/HomePage.jsx";
 import LoginPage from "./containers/LoginPage.jsx";
 import LogoutFunction from "./containers/LogoutFunction.jsx";
@@ -33,9 +28,8 @@ axios.defaults.headers.common['Authorization'] =
   'Bearer ' + localStorage.getItem('token');
 
 
-// remove tap delay, essential for MaterialUI to work properly
-injectTapEventPlugin();
 
+injectTapEventPlugin();
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -113,7 +107,7 @@ class App extends Component {
     });
   };
 
-  copy = coppiedText => {
+  copy = (coppiedText) => {
     coppiedText.select();
     document.execCommand("copy");
   };
@@ -177,58 +171,6 @@ class App extends Component {
   //CRUD Functions
   //----------
 
-  //User Functions
-  //----------
-
-  setUser = (userID) => {
-    let userAuthName;
-    let userAuthID;
-    let userFolders = [];
-
-    //REQUIRE AUTENTICATION LOGIC HERE
-
-    // userAuthName = "User One";
-    // userAuthID = "5b5c9d75e862220468afc741";
-
-    api.getFolderbyUser(userAuthID).then(response => {
-      userFolders = response.data.folders
-      this.setState({
-        ...this.state,
-        user: userAuthName,
-        userID: userAuthID,
-        userFolderList: userFolders,
-        innactiveFolders: userFolders
-      });
-    });
-  };
-
-  logout = () => {
-    localStorage.removeItem("token");
-    this.setState({
-      ...this.state,
-      user: "",
-      userID: "",
-      userFolderList: [],
-      innactiveFolders: [],
-      activeFolders: [],
-      newFolder: "default",
-      newDescription: "default",
-      newURL: "default",
-      searchTerm: "",
-    });
-  };
-
-  reloadFolders = (userID) => {
-    api.getFolderbyUser(userID).then(response => {
-      const userFolders = response.data.folders
-      this.setState({
-        ...this.state,
-        userFolderList: userFolders,
-        innactiveFolders: userFolders,
-      });
-    });
-  };
-
   //Folder Functions
   //----------
   addFolder = () => {
@@ -265,10 +207,16 @@ class App extends Component {
   deleteFolder = folderID => {
     console.log(`Folder ID of ${folderID} to be deleted`);
     const folderObj = { folder_id: folderID };
-
     api.deleteFolder(folderID, folderObj).then(() => {
       const userID = this.state.userID;
-      this.reloadfolders(userID);
+      api.getFolderbyUser(userID).then(response => {
+        const userFolders = response.data.folders
+        this.setState({
+          ...this.state,
+          userFolderList: userFolders,
+          innactiveFolders: userFolders,
+        });
+      });
     });
   };
 
@@ -311,15 +259,24 @@ class App extends Component {
     const linkObj = { folder_id: folderID, url: linkUrl };
     api.deleteLink(linkObj).then(() => {
       const userID = this.state.userID;
-      this.reloadfolders(userID);
+      api.getFolderbyUser(userID).then(response => {
+        const userFolders = response.data.folders
+        this.setState({
+          ...this.state,
+          userFolderList: userFolders,
+          innactiveFolders: userFolders,
+        });
+      });
     });
-
   };
+
+  //Auth Functions
+  //----------
+
   componentDidMount() {
     // check if user is logged in on refresh
     this.toggleAuthenticateStatus();
   };
-
 
   toggleAuthenticateStatus() {
     // check authenticated status and toggle state based on that
@@ -336,6 +293,22 @@ class App extends Component {
         });
       });
     }, 250);
+  };
+
+  logout = () => {
+    localStorage.removeItem("token");
+    this.setState({
+      ...this.state,
+      user: "",
+      userID: "",
+      userFolderList: [],
+      innactiveFolders: [],
+      activeFolders: [],
+      newFolder: "default",
+      newDescription: "default",
+      newURL: "default",
+      searchTerm: "",
+    });
   };
 
   //----------
@@ -404,18 +377,20 @@ class App extends Component {
                     component={LoginPage}
                     toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()}
                   />
+                  <LoggedOutRoute path="/signup" component={SignUpPage} />
+                  <Route path="/logout" component={LogoutFunction} />
                   <div className="">
                     {this.state.authenticated ? (
-                        <div className="bg-dark my-2">
-                        {/* <button class="btn btn-sm align-middle btn-primary" type="button">Always visible here!</button> */}
-                        <div className="col-md-4">
-                          <Link to="/dashboard"> <button className="btn btn-sm align-middle px-5 mr-2 btn-success" type="button">Log In</button></Link>
-                          <Link to="/logout"> <button className="btn btn-sm align-middle px-5 ml-2 btn-success" type="button">Sign Up</button></Link>
+                      <div className="row my-3">
+                        <div className="col-md-3"></div>
+                        <div className="col-md-6 m-*-auto text-center">
+                          <Link to="/dashboard"> <button className="btn btn-sm align-middle px-5 mr-2 btn-success" type="button">Home</button></Link>
+                          <Link to="/logout"> <button className="btn btn-sm align-middle px-5 ml-2 btn-success" type="button">Log Out</button></Link>
                         </div>
+                        <div className="col-md-3"></div>
                       </div>
                     ) : (
                         <div className="row my-3">
-                          {/* <button class="btn btn-sm align-middle btn-primary" type="button">Always visible here!</button> */}
                           <div className="col-md-3"></div>
                           <div className="col-md-6 m-*-auto text-center">
                             <Link to="/login"> <button className="btn btn-sm align-middle px-5 mr-2 btn-success" type="button">Log In</button></Link>
@@ -425,8 +400,6 @@ class App extends Component {
                         </div>
                       )}
                   </div>
-                  <LoggedOutRoute path="/signup" component={SignUpPage} />
-                  <Route path="/logout" component={LogoutFunction} />
                 </div>
                 <div className="col-1"></div>
               </div>

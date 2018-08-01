@@ -42,7 +42,7 @@ const LoginForm = ({
         </div>
 
         <div className="button-line">
-          <button className="btn btn-success" type="submit" label="Log in" primary>Log In </button>
+          <button className="btn btn-success mt-4" type="submit" label="Log in" primary>Log In </button>
         </div>
 
         <CardText>Don't have an account? <Link className="navStyle" to={'/signup'}>Create one</Link>.</CardText>
