@@ -12,7 +12,7 @@ module.exports = {
 
   returnUserFolders: function(req, res) {
     db.User.findOne({ _id: req.params.userId })
-      // .populate("folders")
+      .populate("folders")
       .then(dbFolders => res.json(dbFolders))
       .catch(err => res.status(422).json(err));
   },
